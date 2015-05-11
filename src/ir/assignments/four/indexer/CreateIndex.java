@@ -1,14 +1,19 @@
 package ir.assignments.four.indexer;
 
+import ir.assignments.four.domain.FileDumpObject;
 import ir.assignments.four.util.Util;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class CreateIndex {
 
@@ -17,18 +22,34 @@ public class CreateIndex {
 
 	public static void main(String[] args) {
 		List<File> files = Util.getFilesInPath(DOCFILEPATH);
-
+		System.out.println(files.size());
+		
 		HashMap<String, Integer> termToTermIdMap = termToTermId(files);
 		HashMap<Integer, String> termIdToTermMap = termIdToTerm(termToTermIdMap);
 		save(termToTermIdMap, termIdToTermMap, "termToTermId.csv");
+	}
+	
+	private static List<FileDumpObject> filesToFDO(List<File> files) {
+		ArrayList<FileDumpObject> list = new ArrayList<FileDumpObject>();
+		
+		for (File file : files) {
+			try {
+				list.add(new FileDumpObject(new JSONObject(Util.readFile(file))));
+			} catch (JSONException | IOException e) {
+				//e.printStackTrace();
+			}
+		}
+		
+		return list;
 	}
 
 	private static HashMap<String, Integer> termToTermId(List<File> files) {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 
 		int index = 0;
-		for (File file : files) {
-			for (String token : Util.tokenizeHTMLFile(file)) {
+		for (FileDumpObject fdo : filesToFDO(files)) {
+			System.out.println(fdo);
+			for (String token : Util.tokenizeFileDumpObject(fdo)) {
 				if (!map.containsKey(token)) {
 					map.put(token, index++);
 				}

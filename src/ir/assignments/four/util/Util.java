@@ -1,11 +1,15 @@
 package ir.assignments.four.util;
 
+import ir.assignments.four.domain.FileDumpObject;
 import ir.assignments.two.helper.TestHelper;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -14,16 +18,22 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 public class Util {
-	
+
 	private static final String STOPWORDSPATH = "Stopwords.txt";
 	private static HashSet<String> stopwords = new HashSet<String>();
-	
+
+	/** read file into String **/
+	public static String readFile(File file) throws IOException {
+		byte[] encoded = Files.readAllBytes(Paths.get(file.getAbsolutePath()));
+		return new String(encoded, StandardCharsets.UTF_8);
+	}
+
 	/** get list of all files in path **/
 	public static List<File> getFilesInPath(String path) {
 		List<File> files = new ArrayList<File>();
 		File folder = new File(path);
 		File[] listOfFiles = folder.listFiles();
-		
+
 		for (int i = 0; i < listOfFiles.length; ++i) {
 			if (listOfFiles[i].isFile()) {
 				files.add(listOfFiles[i]);
@@ -31,14 +41,58 @@ public class Util {
 				files.addAll(getFilesInPath(listOfFiles[i].getAbsolutePath()));
 			}
 		}
-		
+
 		return files;
+	}
+
+	/** tokenizes JSON file, omitting all stopwords **/
+	public static ArrayList<String> tokenizeFileDumpObject(FileDumpObject fdo) {
+		initStopWords(STOPWORDSPATH);
+
+		ArrayList<String> result = new ArrayList<String>();
+		StringBuilder token = new StringBuilder();
+		String tokenString;
+		int size = 0;
+
+		if (fdo.isValid()) {
+			for (char c : fdo.getText().toCharArray()) {
+				if (c == -1) {
+					if (token.length() != 0) {
+						tokenString = token.toString().toLowerCase();
+						if (!stopwords.contains(tokenString)) {
+							result.add(tokenString);
+						}
+					}
+					break; // EOF
+				}
+				if (isValidChar(c)) {
+					// append c to end of accumulated token
+					token.append(c);
+				} else {
+					if (token.length() != 0) {
+						// add accumulated token to list
+						tokenString = token.toString().toLowerCase();
+						if (!stopwords.contains(tokenString) && tokenString.length() > 2
+								&& tokenString.length() < 20) {
+							result.add(tokenString);
+						}
+						// clear token object
+						token.delete(0, token.length());
+						++size;
+						if (size % 100000 == 0) {
+							TestHelper.debugMessage("Size of Tokens List: " + size);
+						}
+					}
+				}
+			}
+		}
+		return result;
 	}
 
 	/** tokenizes HTML file, omitting all stopwords **/
 	public static ArrayList<String> tokenizeHTMLFile(File input) {
 		initStopWords(STOPWORDSPATH);
-		
+
 		ArrayList<String> result = new ArrayList<String>();
 		StringBuilder token = new StringBuilder();
 		String tokenString;
