@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import createDatabase.ICSDumpDatabase;
 
 public class CreateIndex {
 
@@ -32,6 +33,10 @@ public class CreateIndex {
 
 		System.out.println(termToTermIdMap.size());
 		System.out.println(termIdToTermMap.size());
+		
+		ICSDumpDatabase database = new ICSDumpDatabase(termIdToTermMap); 
+		database.create();
+		
 	}
 
 	/** return map of term to term id **/
