@@ -9,15 +9,18 @@ import java.util.HashMap;
 public class LoadIndex {
 
 	public static void main(String[] args) {
-		HashMap<String, Integer> termToTermIdMap = loadTermToTermId(IndexerLocations.termToTermIdCSV);
-		HashMap<Integer, String> termIdToTermMap = loadTermIdToTerm(termToTermIdMap);
+		HashMap<String, Integer> termToTermIdMap;
+		HashMap<Integer, String> termIdToTermMap;
+		
+		termToTermIdMap = loadTermToTermId(IndexerLocations.termToTermIdCSV);
+		termIdToTermMap = loadTermIdToTerm(termToTermIdMap);
 
 		System.out.println(termToTermIdMap.size());
 		System.out.println(termIdToTermMap.size());
 	}
 
 	/** load term to term id map from file **/
-	private static HashMap<String, Integer> loadTermToTermId(String path) {
+	public static HashMap<String, Integer> loadTermToTermId(String path) {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 
 		String fileString = null;
@@ -37,7 +40,7 @@ public class LoadIndex {
 	}
 
 	/** load term id to term map from file **/
-	private static HashMap<Integer, String> loadTermIdToTerm(
+	public static HashMap<Integer, String> loadTermIdToTerm(
 			HashMap<String, Integer> termToTermIdMap) {
 		HashMap<Integer, String> map = new HashMap<Integer, String>();
 

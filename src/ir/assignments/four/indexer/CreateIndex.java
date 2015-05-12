@@ -14,13 +14,24 @@ import org.json.JSONObject;
 public class CreateIndex {
 
 	public static void main(String[] args) {
-		List<File> files = Util.getFilesInPath(IndexerLocations.fileDump);
+		List<File> files;
+		HashMap<String, Integer> termToTermIdMap;
+		HashMap<Integer, String> termIdToTermMap;
 
-		HashMap<String, Integer> termToTermIdMap = createTermToTermIdMap(files);
-		HashMap<Integer, String> termIdToTermMap = createTermIdToTermMap(termToTermIdMap);
+		/*
+		files = Util.getFilesInPath(IndexerLocations.fileDump);
+		termToTermIdMap = createTermToTermIdMap(files);
+		termIdToTermMap = createTermIdToTermMap(termToTermIdMap);
 
 		// save maps to .csv
 		SaveIndex.savetermToTermIdMap(termToTermIdMap, termIdToTermMap, IndexerLocations.termToTermIdCSV);
+		*/
+
+		termToTermIdMap = LoadIndex.loadTermToTermId(IndexerLocations.termToTermIdCSV);
+		termIdToTermMap = LoadIndex.loadTermIdToTerm(termToTermIdMap);
+
+		System.out.println(termToTermIdMap.size());
+		System.out.println(termIdToTermMap.size());
 	}
 
 	/** return map of term to term id **/
@@ -28,35 +39,29 @@ public class CreateIndex {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 
 		int index = 0;
-		int processed = 0;
 		for (File file : files) {
 			FileDumpObject fdo = null;
 			try {
 				fdo = fileToFDO(file);
 			} catch (JSONException | IOException e) {
 			}
-			
+
 			if (fdo != null) {
 				for (String token : Util.tokenizeFileDumpObject(fdo)) {
 					if (!map.containsKey(token)) {
 						map.put(token, index++);
 					}
 				}
-				++processed;
 			}
-			// clear fdo
 			fdo = null;
-
-			if (processed % 1000 == 0) {
-				System.out.println(processed);
-			}
 		}
 
 		return map;
 	}
 
 	/** returns map of term id to term **/
-	private static HashMap<Integer, String> createTermIdToTermMap(HashMap<String, Integer> termToTermIdMap) {
+	private static HashMap<Integer, String> createTermIdToTermMap(
+			HashMap<String, Integer> termToTermIdMap) {
 		HashMap<Integer, String> map = new HashMap<Integer, String>();
 
 		for (String key : termToTermIdMap.keySet()) {
@@ -66,8 +71,45 @@ public class CreateIndex {
 		return map;
 	}
 
+	/** returns map of term id to term frequency **/
+	private static HashMap<Integer, Integer> createTermIdToTermFrequency(List<File> files) {
+		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+
+		return map;
+	}
+	
+	/** returns map of doc id to term id **/
+	private static HashMap<Integer, Integer> createDocIdToTermId(List<File> files) {
+		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+
+		return map;
+	}
+	
+	/** returns map of doc id to url **/
+	private static HashMap<Integer, String> createDocIdToURL(List<File> files) {
+		HashMap<Integer, String> map = new HashMap<Integer, String>();
+
+		return map;
+	}
+
 	/** convert File to FileDumpObject **/
 	private static FileDumpObject fileToFDO(File file) throws JSONException, IOException {
 		return new FileDumpObject(new JSONObject(Util.readFile(file)));
 	}
+
+	/** TEMPLATE! **/
+	/*
+	for (File file : files) {
+		FileDumpObject fdo = null;
+		try {
+			fdo = fileToFDO(file);
+		} catch (JSONException | IOException e) {
+		}
+		
+		if (fdo != null) {
+			// TODO: IMPLEMENT HERE!
+		}
+		fdo = null;
+	}
+	*/
 }
