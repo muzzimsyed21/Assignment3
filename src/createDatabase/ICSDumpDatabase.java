@@ -72,7 +72,7 @@ public class ICSDumpDatabase {
 	}
 	
 	
-	private Connection connect() throws SQLException{
+	private void connect() throws SQLException{
 		
 
 		Scanner input = new Scanner(System.in); 
@@ -88,14 +88,12 @@ public class ICSDumpDatabase {
 			
 			Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/?user="+username+"&password="+password);
 			this.connection = connection; 
-			return connection;
 		}
 		
 		else{
 			
 			Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/"+this.databaseName+"?user="+username+"&password="+password);			
 			this.connection = connection; 
-			return connection;
 		}
 
 			 
