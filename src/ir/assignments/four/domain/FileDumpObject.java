@@ -3,6 +3,7 @@ package ir.assignments.four.domain;
 import org.json.JSONObject;
 
 public class FileDumpObject {
+	
 	private String text;
 	private String url;
 	private String title;

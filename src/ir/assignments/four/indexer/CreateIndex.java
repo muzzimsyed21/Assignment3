@@ -8,7 +8,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -22,13 +21,13 @@ public class CreateIndex {
 
 	public static void main(String[] args) {
 		List<File> files = Util.getFilesInPath(DOCFILEPATH);
-		System.out.println(files.size());
 		
 		HashMap<String, Integer> termToTermIdMap = termToTermId(files);
 		HashMap<Integer, String> termIdToTermMap = termIdToTerm(termToTermIdMap);
-		save(termToTermIdMap, termIdToTermMap, "termToTermId.csv");
+		savetermToTermIdMap(termToTermIdMap, termIdToTermMap, "termToTermId.csv");
 	}
 	
+	/** converts list of Files to list of FileDumpObjects **/
 	private static List<FileDumpObject> filesToFDO(List<File> files) {
 		ArrayList<FileDumpObject> list = new ArrayList<FileDumpObject>();
 		
@@ -43,12 +42,12 @@ public class CreateIndex {
 		return list;
 	}
 
+	/** return map of term to term id **/
 	private static HashMap<String, Integer> termToTermId(List<File> files) {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 
 		int index = 0;
 		for (FileDumpObject fdo : filesToFDO(files)) {
-			System.out.println(fdo);
 			for (String token : Util.tokenizeFileDumpObject(fdo)) {
 				if (!map.containsKey(token)) {
 					map.put(token, index++);
@@ -59,6 +58,7 @@ public class CreateIndex {
 		return map;
 	}
 
+	/** returns map of term id to term **/
 	private static HashMap<Integer, String> termIdToTerm(HashMap<String, Integer> termToTermIdMap) {
 		HashMap<Integer, String> map = new HashMap<Integer, String>();
 
@@ -69,7 +69,8 @@ public class CreateIndex {
 		return map;
 	}
 
-	private static void save(HashMap<String, Integer> termToTermIdMap,
+	/** save map of term to term id **/
+	private static void savetermToTermIdMap(HashMap<String, Integer> termToTermIdMap,
 			HashMap<Integer, String> termIdToTermMap, String path) {
 		PrintWriter writer = null;
 		try {

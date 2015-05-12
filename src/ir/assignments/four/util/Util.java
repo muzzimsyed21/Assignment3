@@ -1,7 +1,6 @@
 package ir.assignments.four.util;
 
 import ir.assignments.four.domain.FileDumpObject;
-import ir.assignments.two.helper.TestHelper;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,9 +12,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
 public class Util {
 
@@ -45,102 +41,52 @@ public class Util {
 		return files;
 	}
 
-	/** tokenizes JSON file, omitting all stopwords **/
-	public static ArrayList<String> tokenizeFileDumpObject(FileDumpObject fdo) {
-		initStopWords(STOPWORDSPATH);
-
-		ArrayList<String> result = new ArrayList<String>();
-		StringBuilder token = new StringBuilder();
-		String tokenString;
-		int size = 0;
-
+	/** tokenizes FileDumpObject, omitting all stopwords **/
+	public static List<String> tokenizeFileDumpObject(FileDumpObject fdo) {
 		if (fdo.isValid()) {
-			for (char c : fdo.getText().toCharArray()) {
-				if (c == -1) {
-					if (token.length() != 0) {
-						tokenString = token.toString().toLowerCase();
-						if (!stopwords.contains(tokenString)) {
-							result.add(tokenString);
-						}
-					}
-					break; // EOF
-				}
-				if (isValidChar(c)) {
-					// append c to end of accumulated token
-					token.append(c);
-				} else {
-					if (token.length() != 0) {
-						// add accumulated token to list
-						tokenString = token.toString().toLowerCase();
-						if (!stopwords.contains(tokenString) && tokenString.length() > 2
-								&& tokenString.length() < 20) {
-							result.add(tokenString);
-						}
-						// clear token object
-						token.delete(0, token.length());
-						++size;
-						if (size % 100000 == 0) {
-							TestHelper.debugMessage("Size of Tokens List: " + size);
-						}
-					}
-				}
-			}
+			return tokenize(fdo.getText());
 		}
-		return result;
+		return new ArrayList<String>();
 	}
 
-	/** tokenizes HTML file, omitting all stopwords **/
-	public static ArrayList<String> tokenizeHTMLFile(File input) {
+	/** tokenizes String, omitting all stopwords **/
+	private static List<String> tokenize(String s) {
 		initStopWords(STOPWORDSPATH);
 
-		ArrayList<String> result = new ArrayList<String>();
+		List<String> result = new ArrayList<String>();
 		StringBuilder token = new StringBuilder();
 		String tokenString;
-		int size = 0;
-		Document doc = null;
 
-		try {
-			doc = Jsoup.parse(input, "UTF-8", "http://example.com/");
-			if (doc == null) {
-				return result;
-			}
-			for (char c : doc.select("body").text().replaceAll("<[^>]*>|&[^>]*;", "").toCharArray()) {
-				if (c == -1) {
-					if (token.length() != 0) {
-						tokenString = token.toString().toLowerCase();
-						if (!stopwords.contains(tokenString)) {
-							result.add(tokenString);
-						}
-					}
-					break; // EOF
-				}
-				if (isValidChar(c)) {
-					// append c to end of accumulated token
-					token.append(c);
-				} else {
-					if (token.length() != 0) {
-						// add accumulated token to list
-						tokenString = token.toString().toLowerCase();
-						if (!stopwords.contains(tokenString) && tokenString.length() > 2
-								&& tokenString.length() < 20) {
-							result.add(tokenString);
-						}
-						// clear token object
-						token.delete(0, token.length());
-						++size;
-						if (size % 100000 == 0) {
-							TestHelper.debugMessage("Size of Tokens List: " + size);
-						}
+		for (char c : s.toCharArray()) {
+			if (c == -1) {
+				if (token.length() != 0) {
+					tokenString = token.toString().toLowerCase();
+					if (!stopwords.contains(tokenString)) {
+						result.add(tokenString);
 					}
 				}
+				break; // EOF
 			}
-		} catch (IOException | NullPointerException e) {
-			e.printStackTrace();
+			if (isValidChar(c)) {
+				// append c to end of accumulated token
+				token.append(c);
+			} else {
+				if (token.length() != 0) {
+					// add accumulated token to list
+					tokenString = token.toString().toLowerCase();
+					if (!stopwords.contains(tokenString) && tokenString.length() > 2
+							&& tokenString.length() < 20) {
+						result.add(tokenString);
+					}
+					// clear token object
+					token.delete(0, token.length());
+				}
+			}
 		}
 		return result;
 	}
 
-	/** init stop words **/
+	/** init global set of stop words **/
 	public static void initStopWords(String path) {
 		if (!stopwords.isEmpty()) {
 			return;
