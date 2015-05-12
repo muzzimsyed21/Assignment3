@@ -18,12 +18,6 @@ public class Util {
 	private static final String STOPWORDSPATH = "Stopwords.txt";
 	private static HashSet<String> stopwords = new HashSet<String>();
 
-	/** read file into String **/
-	public static String readFile(File file) throws IOException {
-		byte[] encoded = Files.readAllBytes(Paths.get(file.getAbsolutePath()));
-		return new String(encoded, StandardCharsets.UTF_8);
-	}
-
 	/** get list of all files in path **/
 	public static List<File> getFilesInPath(String path) {
 		List<File> files = new ArrayList<File>();
@@ -40,7 +34,13 @@ public class Util {
 
 		return files;
 	}
-
+	
+	/** read file into String **/
+	public static String readFile(File file) throws IOException {
+		byte[] encoded = Files.readAllBytes(Paths.get(file.getAbsolutePath()));
+		return new String(encoded, StandardCharsets.UTF_8);
+	}
+	
 	/** tokenizes FileDumpObject, omitting all stopwords **/
 	public static List<String> tokenizeFileDumpObject(FileDumpObject fdo) {
 		if (fdo.isValid()) {
