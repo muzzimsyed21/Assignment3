@@ -1,5 +1,6 @@
 package ir.assignments.four.indexer;
 
+import ir.assignments.four.database.ICSDumpDatabase;
 import ir.assignments.four.domain.FileDumpObject;
 import ir.assignments.four.util.Util;
 
@@ -10,7 +11,6 @@ import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import createDatabase.ICSDumpDatabase;
 
 public class CreateIndex {
 
@@ -33,10 +33,10 @@ public class CreateIndex {
 
 		System.out.println(termToTermIdMap.size());
 		System.out.println(termIdToTermMap.size());
-		
-		ICSDumpDatabase database = new ICSDumpDatabase(termIdToTermMap); 
+
+		ICSDumpDatabase database = new ICSDumpDatabase(termIdToTermMap);
 		database.create();
-		
+
 	}
 
 	/** return map of term to term id **/
@@ -82,14 +82,14 @@ public class CreateIndex {
 
 		return map;
 	}
-	
+
 	/** returns map of doc id to term id **/
 	private static HashMap<Integer, Integer> createDocIdToTermId(List<File> files) {
 		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
 
 		return map;
 	}
-	
+
 	/** returns map of doc id to url **/
 	private static HashMap<Integer, String> createDocIdToURL(List<File> files) {
 		HashMap<Integer, String> map = new HashMap<Integer, String>();
