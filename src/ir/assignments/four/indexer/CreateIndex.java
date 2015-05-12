@@ -13,28 +13,29 @@ import org.json.JSONObject;
 
 public class CreateIndex {
 
-	/** path to all docs **/
-	//public static String DOCFILEPATH = "testFiles/";
-	public static String DOCFILEPATH = "FileDump/";
-
 	public static void main(String[] args) {
-		List<File> files = Util.getFilesInPath(DOCFILEPATH);
-		
-		HashMap<String, Integer> termToTermIdMap = termToTermId(files);
-		HashMap<Integer, String> termIdToTermMap = termIdToTerm(termToTermIdMap);
-		
+		List<File> files = Util.getFilesInPath(IndexerLocations.fileDump);
+
+		HashMap<String, Integer> termToTermIdMap = createTermToTermIdMap(files);
+		HashMap<Integer, String> termIdToTermMap = createTermIdToTermMap(termToTermIdMap);
+
 		// save maps to .csv
-		SaveIndex.savetermToTermIdMap(termToTermIdMap, termIdToTermMap, "termToTermId.csv");
+		SaveIndex.savetermToTermIdMap(termToTermIdMap, termIdToTermMap, IndexerLocations.termToTermIdCSV);
 	}
 
 	/** return map of term to term id **/
-	private static HashMap<String, Integer> termToTermId(List<File> files) {
+	private static HashMap<String, Integer> createTermToTermIdMap(List<File> files) {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 
 		int index = 0;
 		int processed = 0;
 		for (File file : files) {
-			FileDumpObject fdo = fileToFDO(file);
+			FileDumpObject fdo = null;
+			try {
+				fdo = fileToFDO(file);
+			} catch (JSONException | IOException e) {
+			}
+			
 			if (fdo != null) {
 				for (String token : Util.tokenizeFileDumpObject(fdo)) {
 					if (!map.containsKey(token)) {
@@ -43,8 +44,9 @@ public class CreateIndex {
 				}
 				++processed;
 			}
+			// clear fdo
 			fdo = null;
-			
+
 			if (processed % 1000 == 0) {
 				System.out.println(processed);
 			}
@@ -54,7 +56,7 @@ public class CreateIndex {
 	}
 
 	/** returns map of term id to term **/
-	private static HashMap<Integer, String> termIdToTerm(HashMap<String, Integer> termToTermIdMap) {
+	private static HashMap<Integer, String> createTermIdToTermMap(HashMap<String, Integer> termToTermIdMap) {
 		HashMap<Integer, String> map = new HashMap<Integer, String>();
 
 		for (String key : termToTermIdMap.keySet()) {
@@ -63,13 +65,9 @@ public class CreateIndex {
 
 		return map;
 	}
-	
-	private static FileDumpObject fileToFDO(File file) {
-		try {
-			return new FileDumpObject(new JSONObject(Util.readFile(file)));
-		} catch (JSONException | IOException e) {
-			//e.printStackTrace();
-		}
-		return null;
+
+	/** convert File to FileDumpObject **/
+	private static FileDumpObject fileToFDO(File file) throws JSONException, IOException {
+		return new FileDumpObject(new JSONObject(Util.readFile(file)));
 	}
 }

@@ -50,7 +50,7 @@ public class Util {
 	}
 
 	/** tokenizes String, omitting all stopwords **/
-	private static List<String> tokenize(String s) {
+	public static List<String> tokenize(String s) {
 		initStopWords(STOPWORDSPATH);
 
 		List<String> result = new ArrayList<String>();
