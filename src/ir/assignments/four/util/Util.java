@@ -74,8 +74,7 @@ public class Util {
 				if (token.length() != 0) {
 					// add accumulated token to list
 					tokenString = token.toString().toLowerCase();
-					if (!stopwords.contains(tokenString) && tokenString.length() > 2
-							&& tokenString.length() < 20) {
+					if (!stopwords.contains(tokenString)) {
 						result.add(tokenString);
 					}
 					// clear token object
@@ -119,7 +118,7 @@ public class Util {
 	 * @return Validity of c.
 	 */
 	private static boolean isValidChar(int c) {
-		return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9');
+		return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || (c == '\'');
 	}
 
 }
