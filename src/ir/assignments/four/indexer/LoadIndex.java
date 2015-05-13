@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class LoadIndex {
 
 	/** load term to term id map from file **/
-	public static HashMap<String, Integer> loadTermToTermId(String path) {
+	public static HashMap<String, Integer> loadTermToTermIdMap(String path) {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 
 		String fileString = null;
@@ -28,8 +28,8 @@ public class LoadIndex {
 		return map;
 	}
 
-	/** load term id to term map from file **/
-	public static HashMap<Integer, String> loadTermIdToTerm(HashMap<String, Integer> termToTermIdMap) {
+	/** load term id to term map from map **/
+	public static HashMap<Integer, String> loadTermIdToTermMap(HashMap<String, Integer> termToTermIdMap) {
 		HashMap<Integer, String> map = new HashMap<Integer, String>();
 
 		for (String key : termToTermIdMap.keySet()) {
@@ -40,7 +40,7 @@ public class LoadIndex {
 	}
 
 	/** load term id to term map from file **/
-	public static HashMap<Integer, Integer> loadTermIdToTermFrequency(String path) {
+	public static HashMap<Integer, Integer> loadTermIdToTermFrequencyMap(String path) {
 		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
 
 		String fileString = null;
@@ -58,5 +58,32 @@ public class LoadIndex {
 
 		return map;
 	}
+	
+	/** load doc id to term id map from file **/
+	public static HashMap<Integer, Integer> loadDocIdToTermIdMap(String path) {
+		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+		
+		// TODO
 
+		return map;
+	}
+	
+	/** load doc id to term id map from map **/
+	public static HashMap<Integer, Integer> loadTermIdToDocIdMap(HashMap<Integer, Integer> docIdToTermIdMap) {
+		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+		
+		// TODO
+
+		return map;
+	}
+
+	/** load doc id to url from file **/
+	public static HashMap<Integer, String> loadDocIdToUrlMap(String path) {
+		HashMap<Integer, String> map = new HashMap<Integer, String>();
+		
+		// TODO
+
+		return map;
+	}
+	
 }

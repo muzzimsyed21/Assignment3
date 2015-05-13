@@ -9,7 +9,7 @@ import java.util.List;
 
 public class SaveIndex {
 
-	/** save map of term to term id **/
+	/** save term to term id map **/
 	public static void saveTermIdToTermFrequencyMap(
 			HashMap<Integer, Integer> termIdToTermFrequencyMap, String path) {
 		PrintWriter writer = null;
@@ -28,8 +28,8 @@ public class SaveIndex {
 		}
 	}
 
-	/** save map of term to term id **/
-	public static void saveTermIdToTermFrequencyMap(HashMap<String, Integer> termToTermIdMap,
+	/** save term to term id map **/
+	public static void saveTermToTermIdMap(HashMap<String, Integer> termToTermIdMap,
 			HashMap<Integer, String> termIdToTermMap, String path) {
 		PrintWriter writer = null;
 		try {
@@ -53,4 +53,17 @@ public class SaveIndex {
 		}
 	}
 
+	/** save doc id to term id map **/
+	public static void saveDocIdToTermIdMap(HashMap<Integer, Integer> termToTermIdMap, String path) {
+		
+		// TODO
+		
+	}
+	
+	/** save doc id to url map **/
+	public static void saveDocIdToUrlMap(HashMap<Integer, String> docIdToUrlMap, String path) {
+		
+		// TODO
+		
+	}
 }

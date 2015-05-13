@@ -13,7 +13,7 @@ import org.json.JSONObject;
 
 public class CreateIndex {
 
-	/** return map of term to term id **/
+	/** returns term to term id map **/
 	public static HashMap<String, Integer> createTermToTermIdMap(List<File> files) {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 
@@ -38,20 +38,8 @@ public class CreateIndex {
 		return map;
 	}
 
-	/** returns map of term id to term **/
-	public static HashMap<Integer, String> createTermIdToTermMap(
-			HashMap<String, Integer> termToTermIdMap) {
-		HashMap<Integer, String> map = new HashMap<Integer, String>();
-
-		for (String key : termToTermIdMap.keySet()) {
-			map.put(termToTermIdMap.get(key), key);
-		}
-
-		return map;
-	}
-
-	/** returns map of term id to term frequency **/
-	public static HashMap<Integer, Integer> createTermIdToTermFrequency(List<File> files,
+	/** returns term id to term frequency map **/
+	public static HashMap<Integer, Integer> createTermIdToTermFrequencyMap(List<File> files,
 			HashMap<String, Integer> termToTermIdMap) {
 
 		int mapSize = termToTermIdMap.size();
@@ -80,17 +68,43 @@ public class CreateIndex {
 		return map;
 	}
 
-	/** returns map of doc id to term id **/
-	public static HashMap<Integer, Integer> createDocIdToTermId(List<File> files) {
+	/** returns doc id to term id map **/
+	public static HashMap<Integer, Integer> createDocIdToTermIdMap(List<File> files) {
 		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
 
+		for (File file : files) {
+			FileDumpObject fdo = null;
+			try {
+				fdo = fileToFDO(file);
+			} catch (JSONException | IOException e) {
+			}
+			
+			if (fdo != null) {
+				// TODO
+			}
+			fdo = null;
+		}
+		
 		return map;
 	}
 
-	/** returns map of doc id to url **/
-	public static HashMap<Integer, String> createDocIdToURL(List<File> files) {
+	/** returns doc id to url map **/
+	public static HashMap<Integer, String> createDocIdToURLMap(List<File> files) {
 		HashMap<Integer, String> map = new HashMap<Integer, String>();
 
+		for (File file : files) {
+			FileDumpObject fdo = null;
+			try {
+				fdo = fileToFDO(file);
+			} catch (JSONException | IOException e) {
+			}
+			
+			if (fdo != null) {
+				// TODO
+			}
+			fdo = null;
+		}
+		
 		return map;
 	}
 
@@ -109,7 +123,7 @@ public class CreateIndex {
 		}
 		
 		if (fdo != null) {
-			// TODO: IMPLEMENT HERE!
+			// TODO
 		}
 		fdo = null;
 	}
