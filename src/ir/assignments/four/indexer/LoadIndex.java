@@ -8,17 +8,6 @@ import java.util.HashMap;
 
 public class LoadIndex {
 
-	public static void main(String[] args) {
-		HashMap<String, Integer> termToTermIdMap;
-		HashMap<Integer, String> termIdToTermMap;
-		
-		termToTermIdMap = loadTermToTermId(IndexerLocations.termToTermIdCSV);
-		termIdToTermMap = loadTermIdToTerm(termToTermIdMap);
-
-		System.out.println(termToTermIdMap.size());
-		System.out.println(termIdToTermMap.size());
-	}
-
 	/** load term to term id map from file **/
 	public static HashMap<String, Integer> loadTermToTermId(String path) {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
@@ -40,12 +29,31 @@ public class LoadIndex {
 	}
 
 	/** load term id to term map from file **/
-	public static HashMap<Integer, String> loadTermIdToTerm(
-			HashMap<String, Integer> termToTermIdMap) {
+	public static HashMap<Integer, String> loadTermIdToTerm(HashMap<String, Integer> termToTermIdMap) {
 		HashMap<Integer, String> map = new HashMap<Integer, String>();
 
 		for (String key : termToTermIdMap.keySet()) {
 			map.put(termToTermIdMap.get(key), key);
+		}
+
+		return map;
+	}
+
+	/** load term id to term map from file **/
+	public static HashMap<Integer, Integer> loadTermIdToTermFrequency(String path) {
+		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+
+		String fileString = null;
+		try {
+			fileString = Util.readFile(new File(path));
+		} catch (IOException e) {
+		}
+
+		int index = 0;
+		if (fileString != null) {
+			for (String s : Util.tokenize(fileString)) {
+				map.put(index++, Integer.parseInt(s));
+			}
 		}
 
 		return map;
