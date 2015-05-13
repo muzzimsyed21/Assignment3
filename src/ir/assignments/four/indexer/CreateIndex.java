@@ -81,7 +81,6 @@ public class CreateIndex {
 			map.put(i, new ArrayList<Integer>());
 		}
 		
-		int index = 0;
 		for (File file : files) {
 			FileDumpObject fdo = null;
 			try {
@@ -91,9 +90,8 @@ public class CreateIndex {
 
 			if (fdo != null) {
 				for (String token : Util.tokenizeFileDumpObject(fdo)) {
-					map.get(index).add(termToTermIdMap.get(token));
+					map.get(fdo.getId()).add(termToTermIdMap.get(token));
 				}
-				++index;
 			}
 			fdo = null;
 		}
@@ -113,7 +111,7 @@ public class CreateIndex {
 			}
 
 			if (fdo != null) {
-				// TODO
+				map.put(fdo.getId(), fdo.getUrl());
 			}
 			fdo = null;
 		}

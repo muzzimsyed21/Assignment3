@@ -80,8 +80,19 @@ public class SaveIndex {
 	
 	/** save doc id to url map **/
 	public static void saveDocIdToUrlMap(HashMap<Integer, String> docIdToUrlMap, String path) {
-		
-		// TODO
-		
+		PrintWriter writer = null;
+		try {
+			writer = new PrintWriter(new File(path));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		for (int i = 0; i < docIdToUrlMap.size(); ++i) {
+			writer.println(docIdToUrlMap.get(i));
+		}
+
+		if (writer != null) {
+			writer.close();
+		}
 	}
 }

@@ -54,10 +54,10 @@ public class LoadIndex {
 		} catch (IOException e) {
 		}
 
-		int index = 0;
+		int termID = 0;
 		if (fileString != null) {
-			for (String termID : Util.tokenize(fileString)) {
-				map.put(index++, Integer.parseInt(termID));
+			for (String termFreq : Util.tokenize(fileString)) {
+				map.put(termID++, Integer.parseInt(termFreq));
 			}
 		}
 
@@ -116,8 +116,19 @@ public class LoadIndex {
 	/** load doc id to url from file **/
 	public static HashMap<Integer, String> loadDocIdToUrlMap(String path) {
 		HashMap<Integer, String> map = new HashMap<Integer, String>();
+		
+		String fileString = null;
+		try {
+			fileString = Util.readFile(new File(path));
+		} catch (IOException e) {
+		}
 
-		// TODO
+		int docID = 0;
+		if (fileString != null) {
+			for (String url : fileString.split("\n")) {
+				map.put(docID++, url.trim());
+			}
+		}
 
 		return map;
 	}

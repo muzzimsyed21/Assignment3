@@ -63,8 +63,11 @@ public class Indexer {
 		System.out.println(termIdToDocIdMap.size());
 		System.out.println(docIdToUrlMap.size());
 		
-		System.out.println(docIdToTermIdMap.get(0));
+		System.out.println(docIdToTermIdMap.get(2));
 		System.out.println(termIdToDocIdMap.get(0));
+		System.out.println(docIdToUrlMap.get(0));
+		
+		System.out.println("DONE");
 	}
 
 }
