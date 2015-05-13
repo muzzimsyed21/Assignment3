@@ -5,6 +5,7 @@ import ir.assignments.four.util.Util;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 public class Indexer {
 
@@ -24,7 +25,7 @@ public class Indexer {
 	private static HashMap<Integer, List<Integer>> docIdToTermIdMap;
 
 	/** term id to doc id map **/
-	private static HashMap<Integer, Integer> termIdToDocIdMap;
+	private static HashMap<Integer, Set<Integer>> termIdToDocIdMap;
 	
 	/** doc id to url map **/
 	private static HashMap<Integer, String> docIdToUrlMap;
@@ -37,7 +38,7 @@ public class Indexer {
 			termIdToTermMap = LoadIndex.loadTermIdToTermMap(termToTermIdMap);
 			termIdToTermFrequencyMap = CreateIndex.createTermIdToTermFrequencyMap(files, termToTermIdMap);
 			docIdToTermIdMap = CreateIndex.createDocIdToTermIdMap(files, termToTermIdMap);
-			termIdToDocIdMap = LoadIndex.loadTermIdToDocIdMap(docIdToTermIdMap);
+			termIdToDocIdMap = LoadIndex.loadTermIdToDocIdMap(docIdToTermIdMap, termToTermIdMap.size());
 			docIdToUrlMap = CreateIndex.createDocIdToURLMap(files);
 			
 			// save maps to .csv
@@ -51,7 +52,7 @@ public class Indexer {
 			termIdToTermMap = LoadIndex.loadTermIdToTermMap(termToTermIdMap);
 			termIdToTermFrequencyMap = LoadIndex.loadTermIdToTermFrequencyMap(IndexerLocations.termIdToTermFrequencyCSV);
 			docIdToTermIdMap = LoadIndex.loadDocIdToTermIdMap(IndexerLocations.docIdToTermIdCSV);
-			termIdToDocIdMap = LoadIndex.loadTermIdToDocIdMap(docIdToTermIdMap);
+			termIdToDocIdMap = LoadIndex.loadTermIdToDocIdMap(docIdToTermIdMap, termToTermIdMap.size());
 			docIdToUrlMap = LoadIndex.loadDocIdToUrlMap(IndexerLocations.docIdToUrlCSV);
 		}
 		
@@ -63,6 +64,7 @@ public class Indexer {
 		System.out.println(docIdToUrlMap.size());
 		
 		System.out.println(docIdToTermIdMap.get(0));
+		System.out.println(termIdToDocIdMap.get(0));
 	}
 
 }
