@@ -13,45 +13,6 @@ import org.json.JSONObject;
 
 public class CreateIndex {
 
-<<<<<<< HEAD
-	public static void main(String[] args) {
-		List<File> files;
-		HashMap<String, Integer> termToTermIdMap;
-		HashMap<Integer, String> termIdToTermMap;
-		HashMap<Integer, Integer> termIdToTermFrequencyMap;
-
-		files = Util.getFilesInPath(IndexerLocations.fileDump);
-		
-		/*
-		termToTermIdMap = createTermToTermIdMap(files);
-		termIdToTermMap = createTermIdToTermMap(termToTermIdMap);
-
-		// save maps to .csv
-		SaveIndex.saveTermToTermIdMap(termToTermIdMap, termIdToTermMap, IndexerLocations.termToTermIdCSV);
-		*/
-
-		termToTermIdMap = LoadIndex.loadTermToTermId(IndexerLocations.termToTermIdCSV);
-		termIdToTermMap = LoadIndex.loadTermIdToTerm(termToTermIdMap);
-
-		termIdToTermFrequencyMap = createTermIdToTermFrequency(files, termToTermIdMap);
-		
-		System.out.println(termToTermIdMap.size());
-		System.out.println(termIdToTermMap.size());
-		
-		for (int i = 0 ; i < termIdToTermFrequencyMap.size(); ++i) {
-			System.out.println(i + " " + termIdToTermMap.get(i) + " " + termIdToTermFrequencyMap.get(i));
-		}
-		
-		ICSDumpDatabase database = new ICSDumpDatabase("root", "Password1"); 
-		//database.create(); 
-		//database.insert();
-		
-		SaveIndex.saveTermIdToTermFrequencyMap(termIdToTermFrequencyMap, IndexerLocations.termIdToTermFrequencyCSV);
-	}
-	
-
-=======
->>>>>>> 10a186b399467197083046a425484df8fc160f1f
 	/** return map of term to term id **/
 	public static HashMap<String, Integer> createTermToTermIdMap(List<File> files) {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
