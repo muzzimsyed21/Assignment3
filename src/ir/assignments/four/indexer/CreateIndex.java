@@ -5,6 +5,7 @@ import ir.assignments.four.util.Util;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -69,22 +70,34 @@ public class CreateIndex {
 	}
 
 	/** returns doc id to term id map **/
-	public static HashMap<Integer, Integer> createDocIdToTermIdMap(List<File> files) {
-		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+	public static HashMap<Integer, List<Integer>> createDocIdToTermIdMap(List<File> files,
+			HashMap<String, Integer> termToTermIdMap) {
 
+		int mapSize = files.size();
+		
+		HashMap<Integer, List<Integer>> map = new HashMap<Integer, List<Integer>>();
+
+		for (int i = 0; i < mapSize; ++i) {
+			map.put(i, new ArrayList<Integer>());
+		}
+		
+		int index = 0;
 		for (File file : files) {
 			FileDumpObject fdo = null;
 			try {
 				fdo = fileToFDO(file);
 			} catch (JSONException | IOException e) {
 			}
-			
+
 			if (fdo != null) {
-				// TODO
+				for (String token : Util.tokenizeFileDumpObject(fdo)) {
+					map.get(index).add(termToTermIdMap.get(token));
+				}
+				++index;
 			}
 			fdo = null;
 		}
-		
+
 		return map;
 	}
 
@@ -98,13 +111,13 @@ public class CreateIndex {
 				fdo = fileToFDO(file);
 			} catch (JSONException | IOException e) {
 			}
-			
+
 			if (fdo != null) {
 				// TODO
 			}
 			fdo = null;
 		}
-		
+
 		return map;
 	}
 

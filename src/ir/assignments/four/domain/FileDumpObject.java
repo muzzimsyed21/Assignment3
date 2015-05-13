@@ -8,14 +8,14 @@ public class FileDumpObject {
 	private String url;
 	private String title;
 	private String html;
-	private String id;
+	private int id;
 
 	public FileDumpObject(JSONObject json) {
 		this.text = json.get("text").toString();
 		this.url = json.get("_id").toString();
 		this.title = json.get("title").toString();
 		this.html = json.get("html").toString();
-		this.id = json.get("id").toString();
+		this.id = (int) Double.parseDouble(json.get("id").toString());
 	}
 
 	/** returns true if FDO is valid **/
@@ -61,11 +61,11 @@ public class FileDumpObject {
 		this.html = html;
 	}
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 }

@@ -54,10 +54,28 @@ public class SaveIndex {
 	}
 
 	/** save doc id to term id map **/
-	public static void saveDocIdToTermIdMap(HashMap<Integer, Integer> termToTermIdMap, String path) {
-		
-		// TODO
-		
+	public static void saveDocIdToTermIdMap(HashMap<Integer, List<Integer>> docIdToTermIdMap, String path) {
+		PrintWriter writer = null;
+		try {
+			writer = new PrintWriter(new File(path));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		StringBuilder s;
+		for (int i = 0; i < docIdToTermIdMap.size(); ++i) {
+			s = new StringBuilder();
+			s.append(i + ",");
+			for (int j : docIdToTermIdMap.get(i)) {
+				s.append(j + ",");
+			}
+			s = s.delete(s.length()-1, s.length());
+			writer.println(s.toString());
+		}
+
+		if (writer != null) {
+			writer.close();
+		}
 	}
 	
 	/** save doc id to url map **/
