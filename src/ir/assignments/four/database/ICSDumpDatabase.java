@@ -17,8 +17,8 @@ public class ICSDumpDatabase {
 	private String databaseName = null;
 
 	public ICSDumpDatabase(String username, String password) {
-
-		this.termIdToTermMap = termIdToTermMap;
+		this.username = username;
+		this.password = password; 
 	}
 
 	public void create() {
@@ -70,26 +70,17 @@ public class ICSDumpDatabase {
 
 	private void connect() throws SQLException {
 
-		Scanner input = new Scanner(System.in);
-		String username;
-		String password;
-
-		System.out.print("Enter your mysql username");
-		username = input.next();
-		System.out.print("Enter your mysql password");
-		password = input.next();
-
 		if (this.databaseName == null) {
 
 			Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/?user="
-					+ username + "&password=" + password);
+					+ this.username + "&password=" + this.password);
 			this.connection = connection;
 		}
 
 		else {
 
 			Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/"
-					+ this.databaseName + "?user=" + username + "&password=" + password);
+					+ this.databaseName + "?user=" + this.username + "&password=" + this.password);
 			this.connection = connection;
 		}
 
