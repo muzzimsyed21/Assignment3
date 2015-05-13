@@ -42,8 +42,13 @@ public class CreateIndex {
 			System.out.println(i + " " + termIdToTermMap.get(i) + " " + termIdToTermFrequencyMap.get(i));
 		}
 		
+		ICSDumpDatabase database = new ICSDumpDatabase("root", "Password1"); 
+		//database.create(); 
+		//database.insert();
+		
 		SaveIndex.saveTermIdToTermFrequencyMap(termIdToTermFrequencyMap, IndexerLocations.termIdToTermFrequencyCSV);
 	}
+	
 
 	/** return map of term to term id **/
 	private static HashMap<String, Integer> createTermToTermIdMap(List<File> files) {
