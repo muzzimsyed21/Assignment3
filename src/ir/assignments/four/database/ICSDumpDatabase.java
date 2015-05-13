@@ -11,10 +11,12 @@ import java.util.Scanner;
 public class ICSDumpDatabase {
 
 	private HashMap<Integer, String> termIdToTermMap;
+	private String username; 
+	private String password; 	
 	private Connection connection;
 	private String databaseName = null;
 
-	public ICSDumpDatabase(HashMap<Integer, String> termIdToTermMap) {
+	public ICSDumpDatabase(String username, String password) {
 
 		this.termIdToTermMap = termIdToTermMap;
 	}
