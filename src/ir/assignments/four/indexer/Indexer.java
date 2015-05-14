@@ -31,7 +31,6 @@ public class Indexer {
 	private static Map<Integer, String> docIdToUrlMap;
 
 	public static void main(String[] args) {
-		System.out.println("!");
 		List<File> files = Util.getFilesInPath(IndexerLocations.fileDump);
 		
 		if (CREATEFLAG) {
