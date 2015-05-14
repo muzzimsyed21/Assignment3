@@ -3,9 +3,9 @@ package ir.assignments.four.indexer;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class SaveIndex {
 
@@ -29,8 +29,12 @@ public class SaveIndex {
 	}
 
 	/** save term to term id map **/
-	public static void saveTermToTermIdMap(Map<String, Integer> termToTermIdMap,
-			Map<Integer, String> termIdToTermMap, String path) {
+	public static void saveTermToTermIdMap(Map<Integer, String> termIdToTermMap, String path) {
+		if (!(termIdToTermMap instanceof TreeMap)) {
+			System.err.println("SaveError (saveTermToTermIdMap): termIdToTermMap must be type TreeMap");
+			return;
+		}
+		
 		PrintWriter writer = null;
 		try {
 			writer = new PrintWriter(new File(path));
@@ -38,14 +42,8 @@ public class SaveIndex {
 			e.printStackTrace();
 		}
 
-		List<String> keys = new ArrayList<String>();
-		// add keys to new list to save in sorted order
-		for (int i = 0; i < termIdToTermMap.size(); ++i) {
-			keys.add(termIdToTermMap.get(i));
-		}
-
-		for (String key : keys) {
-			writer.println(key);
+		for (int termID : termIdToTermMap.keySet()) {
+			writer.println(termIdToTermMap.get(termID));
 		}
 
 		if (writer != null) {
