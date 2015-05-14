@@ -70,7 +70,7 @@ public class CreateIndex {
 	}
 
 	/** returns doc id to term id map **/
-	public static HashMap<Integer, List<Integer>> createDocIdToTermIdMap(List<File> files,
+	public static HashMap<Integer, List<Integer>> createDocIdToTermIdsMap(List<File> files,
 			HashMap<String, Integer> termToTermIdMap) {
 
 		int mapSize = files.size();
