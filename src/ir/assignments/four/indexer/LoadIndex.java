@@ -65,7 +65,7 @@ public class LoadIndex {
 	}
 
 	/** load doc id to term id map from file **/
-	public static HashMap<Integer, List<Integer>> loadDocIdToTermIdMap(String path) {
+	public static HashMap<Integer, List<Integer>> loadDocIdToTermIdsMap(String path) {
 		HashMap<Integer, List<Integer>> map = new HashMap<Integer, List<Integer>>();
 
 		String fileString = null;

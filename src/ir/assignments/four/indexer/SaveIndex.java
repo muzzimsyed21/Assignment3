@@ -54,7 +54,7 @@ public class SaveIndex {
 	}
 
 	/** save doc id to term id map **/
-	public static void saveDocIdToTermIdMap(HashMap<Integer, List<Integer>> docIdToTermIdMap, String path) {
+	public static void saveDocIdToTermIdsMap(HashMap<Integer, List<Integer>> docIdToTermIdsMap, String path) {
 		PrintWriter writer = null;
 		try {
 			writer = new PrintWriter(new File(path));
@@ -63,10 +63,10 @@ public class SaveIndex {
 		}
 
 		StringBuilder s;
-		for (int i = 0; i < docIdToTermIdMap.size(); ++i) {
+		for (int i = 0; i < docIdToTermIdsMap.size(); ++i) {
 			s = new StringBuilder();
 			s.append(i + ",");
-			for (int j : docIdToTermIdMap.get(i)) {
+			for (int j : docIdToTermIdsMap.get(i)) {
 				s.append(j + ",");
 			}
 			s = s.delete(s.length()-1, s.length());
