@@ -18,6 +18,8 @@ public class Util {
 	private static final String STOPWORDSPATH = "Stopwords.txt";
 	private static HashSet<String> stopwords = new HashSet<String>();
 
+	private static final int MAXWORDSIZE = 64;
+
 	/** get list of all files in path **/
 	public static List<File> getFilesInPath(String path) {
 		List<File> files = new ArrayList<File>();
@@ -34,13 +36,13 @@ public class Util {
 
 		return files;
 	}
-	
+
 	/** read file into String **/
 	public static String readFile(File file) throws IOException {
 		byte[] encoded = Files.readAllBytes(Paths.get(file.getAbsolutePath()));
 		return new String(encoded, StandardCharsets.UTF_8);
 	}
-	
+
 	/** tokenizes FileDumpObject, omitting all stopwords **/
 	public static List<String> tokenizeFileDumpObject(FileDumpObject fdo) {
 		if (fdo.isValid()) {
@@ -61,7 +63,7 @@ public class Util {
 			if (c == -1) {
 				if (token.length() != 0) {
 					tokenString = token.toString().toLowerCase();
-					if (!stopwords.contains(tokenString)) {
+					if (!stopwords.contains(tokenString) && tokenString.length() <= MAXWORDSIZE) {
 						result.add(tokenString);
 					}
 				}
@@ -74,7 +76,7 @@ public class Util {
 				if (token.length() != 0) {
 					// add accumulated token to list
 					tokenString = token.toString().toLowerCase();
-					if (!stopwords.contains(tokenString)) {
+					if (!stopwords.contains(tokenString) && tokenString.length() <= MAXWORDSIZE) {
 						result.add(tokenString);
 					}
 					// clear token object
@@ -118,7 +120,8 @@ public class Util {
 	 * @return Validity of c.
 	 */
 	private static boolean isValidChar(int c) {
-		return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || (c == '\'');
+		return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9')
+				|| (c == '\'');
 	}
 
 }
