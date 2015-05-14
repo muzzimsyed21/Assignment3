@@ -56,6 +56,7 @@ public class Indexer {
 			docIdToUrlMap = LoadIndex.loadDocIdToUrlMap(IndexerLocations.docIdToUrlCSV);
 		}
 		
+		/*
 		System.out.println(termToTermIdMap.size());
 		System.out.println(termIdToTermMap.size());
 		System.out.println(termIdToTermFrequencyMap.size());
@@ -66,8 +67,22 @@ public class Indexer {
 		System.out.println(docIdToTermIdMap.get(2));
 		System.out.println(termIdToDocIdMap.get(0));
 		System.out.println(docIdToUrlMap.get(0));
+		*/
+		
+		System.out.println(getTermId("navigation"));
+		System.out.println(docsWithTerm("ics"));
 		
 		System.out.println("DONE");
+	}
+	
+	/** returns term id of term **/
+	public static int getTermId(String term) {
+		return termToTermIdMap.get(term);
+	}
+	
+	/** return set of all docs containing term **/
+	public static Set<Integer> docsWithTerm(String term) {		
+		return termIdToDocIdMap.get(getTermId(term));
 	}
 
 }
