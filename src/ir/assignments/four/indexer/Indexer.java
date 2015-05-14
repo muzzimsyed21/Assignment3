@@ -3,7 +3,7 @@ package ir.assignments.four.indexer;
 import ir.assignments.four.util.Util;
 
 import java.io.File;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 import java.util.Set;
 
@@ -13,25 +13,24 @@ public class Indexer {
 	private final static boolean CREATEFLAG = false;
 
 	/** term to term id map **/
-	private static HashMap<String, Integer> termToTermIdMap;
+	private static Map<String, Integer> termToTermIdMap;
 
 	/** term id to term map **/
-	private static HashMap<Integer, String> termIdToTermMap;
+	private static Map<Integer, String> termIdToTermMap;
 
 	/** term id to term frequency map **/
-	private static HashMap<Integer, Integer> termIdToTermFrequencyMap;
+	private static Map<Integer, Integer> termIdToTermFrequencyMap;
 
 	/** doc id to term id map **/
-	private static HashMap<Integer, List<Integer>> docIdToTermIdsMap;
+	private static Map<Integer, List<Integer>> docIdToTermIdsMap;
 
 	/** term id to doc id map **/
-	private static HashMap<Integer, Set<Integer>> termIdToDocIdMap;
+	private static Map<Integer, Set<Integer>> termIdToDocIdMap;
 
 	/** doc id to url map **/
-	private static HashMap<Integer, String> docIdToUrlMap;
+	private static Map<Integer, String> docIdToUrlMap;
 
 	public static void main(String[] args) {
-		System.out.println("!");
 		List<File> files = Util.getFilesInPath(IndexerLocations.fileDump);
 		
 		if (CREATEFLAG) {
@@ -43,7 +42,7 @@ public class Indexer {
 			docIdToUrlMap = CreateIndex.createDocIdToURLMap(files);
 
 			// save maps to .csv
-			SaveIndex.saveTermToTermIdMap(termToTermIdMap, termIdToTermMap, IndexerLocations.termToTermIdCSV);
+			SaveIndex.saveTermToTermIdMap(termIdToTermMap, IndexerLocations.termToTermIdCSV);
 			SaveIndex.saveTermIdToTermFrequencyMap(termIdToTermFrequencyMap, IndexerLocations.termIdToTermFrequencyCSV);
 			SaveIndex.saveDocIdToTermIdsMap(docIdToTermIdsMap, IndexerLocations.docIdToTermIdCSV);
 			SaveIndex.saveDocIdToUrlMap(docIdToUrlMap, IndexerLocations.docIdToUrlCSV);

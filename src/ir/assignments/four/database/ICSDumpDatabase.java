@@ -5,13 +5,17 @@ import java.sql.PreparedStatement;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+<<<<<<< HEAD
 import java.util.HashMap;
 import java.util.Properties;
+=======
+import java.util.Map;
+>>>>>>> 403a3653de817646394324ff5fa87f1b025a5a24
 import java.util.Scanner;
 
 public class ICSDumpDatabase {
 
-	private HashMap<Integer, String> termIdToTermMap;
+	private Map<Integer, String> termIdToTermMap;
 	private String username; 
 	private String password; 	
 	private String databaseName = null;
@@ -41,9 +45,15 @@ public class ICSDumpDatabase {
 		}
 
 	}
+<<<<<<< HEAD
 	
 	private void initDb(){
 		
+=======
+
+	public void insertTermToTermId(Map<String, Integer> map) {
+
+>>>>>>> 403a3653de817646394324ff5fa87f1b025a5a24
 		try {
 			
 			Connection connection = getConnection();
