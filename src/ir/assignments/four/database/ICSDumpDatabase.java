@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.Properties;
 import java.util.Scanner;
 
 public class ICSDumpDatabase {
@@ -13,144 +14,115 @@ public class ICSDumpDatabase {
 	private HashMap<Integer, String> termIdToTermMap;
 	private String username; 
 	private String password; 	
-	private Connection connection;
 	private String databaseName = null;
+	private Connection connection = null; 
 
-	public ICSDumpDatabase(String username, String password) {
+	public ICSDumpDatabase(String username, String password, String databaseName) {
 		this.username = username;
 		this.password = password; 
+		this.databaseName = databaseName;
 	}
 
 	public void create() {
 
 		try {
-
-			connect();
-			Statement statement = connection.createStatement();
-			this.databaseName = "ICSDump";
-			statement.executeUpdate("CREATE DATABASE " + databaseName);
-			connection.close();
+			 
+			initDb();
+			setConnectionAfterDatabaseCreation(); 
+			initTermToTermIdTable(); 
+			initDocIdToTermIdTable(); 
+			initDocIDToUrlIdTable();
+			
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 
 	}
-
-	public void insertTermToTermId(HashMap<String, Integer> map) {
-
-		try {
-
-			connect();
-			Statement tableStatement = connection.createStatement(); 
-			String tableName = "Terms"; 
-			String table = "CREATE TABLE "+tableName+
-				           "(id INTEGER NOT NULL, "+
-				           "term VARCHAR(255));"; 
-					    
-			tableStatement.executeUpdate(table); 
-
-			//			for (Integer id: termIdToTermMap.keySet()){
-			//
-			//	            String term = termIdToTermMap.get(id).toString(); 
-			//	            
-			//	            String query = "INSERT INTO "+tableName+" (id, term) VALUES (?, ?)";
-			//	            PreparedStatement preparedStatement = connection.prepareStatement(query);
-			//	            preparedStatement.setString(id, term);
-			//			} 
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-
-	public void insertTermIdToTerm(){
-
-		try {
-
-			connect();
-			Statement tableStatement = connection.createStatement();
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	public void insertTermIdToTermFrequency(){
+	
+	private void initDb(){
 		
 		try {
-
-			connect();
-			Statement tableStatement = connection.createStatement();
-
+			
+			Connection connection = getConnection();
+			String qCreateDb = String.format("create database if not exists %s;", this.databaseName);
+			PreparedStatement statement = connection.prepareStatement(qCreateDb);
+			statement.executeUpdate();
+			connection.close(); 
+			setConnectionAfterDatabaseCreation(); 
+			System.out.println("Initialized database");
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}	
+		} 
+
+	
 	}
 
-	public void insertDocIdToTermId(){
+	private void initTermToTermIdTable() throws SQLException {
 		
-		try {
-
-			connect();
-			Statement tableStatement = connection.createStatement();
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}		
-	}
-
-	public void insertTermIdToDocId(){
-
-		try {
-
-			connect();
-			Statement tableStatement = connection.createStatement();
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-
-	public void insertDocIdToUrl(){
+		PreparedStatement statement;
+		String qCreateTblTerms = "CREATE TABLE IF NOT EXISTS icsdump.termtotermid "
+				+ "(termid INT NOT NULL,"
+				+ "term VARCHAR(64),"
+				+ "PRIMARY KEY (termid));"; 	
+		statement = this.connection.prepareStatement(qCreateTblTerms);
+		statement.executeUpdate();
+		System.out.println("Initialized termToTermId table");
 		
-		try {
-
-			connect();
-			Statement tableStatement = connection.createStatement();
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
 	}
 
+	private void initDocIdToTermIdTable() throws SQLException {
 
-	private void connect() throws SQLException {
+		PreparedStatement statement;
+		
+		String qCreateTblTerms = "CREATE TABLE IF NOT EXISTS icsdump.docidtotermid "
+				+ "(docid INT NOT NULL,"
+				+ "termID INT,"
+				+ "PRIMARY KEY (docid)"
+				+ "FOREIGN KEY (termID) REFERENCES termtotermid(termID));"; 
+		
+		statement = this.connection.prepareStatement(qCreateTblTerms);
+		statement.executeUpdate();
+		System.out.println("Initialized DocIdToTermId table");
+		
+	}
 
-		if (this.databaseName == null) {
+	private void initDocIDToUrlIdTable() throws SQLException {
 
-			Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/?user="
-					+ this.username + "&password=" + this.password);
-			this.connection = connection;
-		}
-
-		else {
-
-			Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/"
-					+ this.databaseName + "?user=" + this.username + "&password=" + this.password);
-			this.connection = connection;
-		}
-
+		PreparedStatement statement;
+		
+		String qCreateTblTerms = "CREATE TABLE IF NOT EXISTS icsdump.docidtourlid "
+				+ "(urlid INT NOT NULL,"
+				+ "docid INT,"
+				+ "PRIMARY KEY (urlid)"
+				+ "FOREIGN KEY (docid) REFERENCES docidtotermid(docid));"; 
+		
+		
+		statement = this.connection.prepareStatement(qCreateTblTerms);
+		statement.executeUpdate();
+		System.out.println("Initialized DocIdToUrlId table");
+	}
+	
+	//create insert functions
+	
+	private Connection getConnection() throws SQLException{
+		
+		
+		Connection connection= DriverManager.getConnection("jdbc:mysql://localhost/?user=" 
+		+this.username + "&password=" + this.password);
+		
+		return connection; 
+	}
+	
+	private void setConnectionAfterDatabaseCreation() throws SQLException{
+		
+		
+		this.connection= DriverManager.getConnection("jdbc:mysql://localhost/"+ this.databaseName 
+				+ "?user=" + this.username + "&password=" + this.password);
 	}
 
 }

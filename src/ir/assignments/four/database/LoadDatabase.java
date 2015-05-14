@@ -16,17 +16,16 @@ public class LoadDatabase {
 		//List<File> files = Util.getFilesInPath(IndexerLocations.fileDump);
 
 		//construct and initiate database
-		ICSDumpDatabase termDatabase = new ICSDumpDatabase("root", "Password1"); 
+		ICSDumpDatabase termDatabase = new ICSDumpDatabase("root", "Password1", "ICSDump"); 
 		termDatabase.create(); //database name => "ICSDump" call this only once!
 		
+		//store termToTermId (both ways)
 		
-		//store termToTermId into database
-		termDatabase.insertTermToTermId(LoadIndex.loadTermToTermIdMap(IndexerLocations.termToTermIdCSV));
-		//store termToTermId into database
-		//termDatabase.insertTermIdToTerm(LoadIndex.loadTermIdToTermMap()); 		
-		//termDatabase.insertDocIdToTermId(LoadIndex.loadTermIdToTermFrequencyMap(IndexerLocations.termIdToTermFrequencyCSV));
-		//termDatabase.insertDocIdToTermId(LoadIndex.loadDocIdToTermIdsMap(IndexerLocations.docIdToTermIdCSV));
+		//store DocIdToTermId (both ways)
 		
+		//store DocIDToUrl (both ways) 
+		
+	
 
 	}
 
