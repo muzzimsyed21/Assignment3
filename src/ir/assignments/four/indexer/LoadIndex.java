@@ -5,16 +5,17 @@ import ir.assignments.four.util.Util;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 public class LoadIndex {
 
 	/** load term to term id map from file **/
-	public static HashMap<String, Integer> loadTermToTermIdMap(String path) {
-		HashMap<String, Integer> map = new HashMap<String, Integer>();
+	public static Map<String, Integer> loadTermToTermIdMap(String path) {
+		Map<String, Integer> map = new TreeMap<String, Integer>();
 
 		String fileString = null;
 		try {
@@ -33,9 +34,8 @@ public class LoadIndex {
 	}
 
 	/** load term id to term map from map **/
-	public static HashMap<Integer, String> loadTermIdToTermMap(
-			HashMap<String, Integer> termToTermIdMap) {
-		HashMap<Integer, String> map = new HashMap<Integer, String>();
+	public static Map<Integer, String> loadTermIdToTermMap(Map<String, Integer> termToTermIdMap) {
+		Map<Integer, String> map = new TreeMap<Integer, String>();
 
 		for (String term : termToTermIdMap.keySet()) {
 			map.put(termToTermIdMap.get(term), term);
@@ -45,8 +45,8 @@ public class LoadIndex {
 	}
 
 	/** load term id to term map from file **/
-	public static HashMap<Integer, Integer> loadTermIdToTermFrequencyMap(String path) {
-		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+	public static Map<Integer, Integer> loadTermIdToTermFrequencyMap(String path) {
+		Map<Integer, Integer> map = new TreeMap<Integer, Integer>();
 
 		String fileString = null;
 		try {
@@ -65,8 +65,8 @@ public class LoadIndex {
 	}
 
 	/** load doc id to term id map from file **/
-	public static HashMap<Integer, List<Integer>> loadDocIdToTermIdsMap(String path) {
-		HashMap<Integer, List<Integer>> map = new HashMap<Integer, List<Integer>>();
+	public static Map<Integer, List<Integer>> loadDocIdToTermIdsMap(String path) {
+		Map<Integer, List<Integer>> map = new TreeMap<Integer, List<Integer>>();
 
 		String fileString = null;
 		try {
@@ -96,14 +96,14 @@ public class LoadIndex {
 	}
 
 	/** load doc id to term id map from map **/
-	public static HashMap<Integer, Set<Integer>> loadTermIdToDocIdMap(
-			HashMap<Integer, List<Integer>> docIdToTermIdMap, int mapSize) {
-		HashMap<Integer, Set<Integer>> map = new HashMap<Integer, Set<Integer>>();
+	public static Map<Integer, Set<Integer>> loadTermIdToDocIdMap(
+			Map<Integer, List<Integer>> docIdToTermIdMap, int mapSize) {
+		Map<Integer, Set<Integer>> map = new TreeMap<Integer, Set<Integer>>();
 
 		for (int termID = 0; termID < mapSize; ++termID) {
 			map.put(termID, new HashSet<Integer>());
 		}
-		
+
 		for (int docID = 0; docID < docIdToTermIdMap.size(); ++docID) {
 			for (int termID : docIdToTermIdMap.get(docID)) {
 				map.get(termID).add(docID);
@@ -114,9 +114,9 @@ public class LoadIndex {
 	}
 
 	/** load doc id to url from file **/
-	public static HashMap<Integer, String> loadDocIdToUrlMap(String path) {
-		HashMap<Integer, String> map = new HashMap<Integer, String>();
-		
+	public static Map<Integer, String> loadDocIdToUrlMap(String path) {
+		Map<Integer, String> map = new TreeMap<Integer, String>();
+
 		String fileString = null;
 		try {
 			fileString = Util.readFile(new File(path));

@@ -4,14 +4,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SaveIndex {
 
 	/** save term to term id map **/
-	public static void saveTermIdToTermFrequencyMap(
-			HashMap<Integer, Integer> termIdToTermFrequencyMap, String path) {
+	public static void saveTermIdToTermFrequencyMap(Map<Integer, Integer> termIdToTermFrequencyMap,
+			String path) {
 		PrintWriter writer = null;
 		try {
 			writer = new PrintWriter(new File(path));
@@ -29,8 +29,8 @@ public class SaveIndex {
 	}
 
 	/** save term to term id map **/
-	public static void saveTermToTermIdMap(HashMap<String, Integer> termToTermIdMap,
-			HashMap<Integer, String> termIdToTermMap, String path) {
+	public static void saveTermToTermIdMap(Map<String, Integer> termToTermIdMap,
+			Map<Integer, String> termIdToTermMap, String path) {
 		PrintWriter writer = null;
 		try {
 			writer = new PrintWriter(new File(path));
@@ -54,7 +54,8 @@ public class SaveIndex {
 	}
 
 	/** save doc id to term id map **/
-	public static void saveDocIdToTermIdsMap(HashMap<Integer, List<Integer>> docIdToTermIdsMap, String path) {
+	public static void saveDocIdToTermIdsMap(Map<Integer, List<Integer>> docIdToTermIdsMap,
+			String path) {
 		PrintWriter writer = null;
 		try {
 			writer = new PrintWriter(new File(path));
@@ -69,7 +70,7 @@ public class SaveIndex {
 			for (int j : docIdToTermIdsMap.get(i)) {
 				s.append(j + ",");
 			}
-			s = s.delete(s.length()-1, s.length());
+			s = s.delete(s.length() - 1, s.length());
 			writer.println(s.toString());
 		}
 
@@ -77,9 +78,9 @@ public class SaveIndex {
 			writer.close();
 		}
 	}
-	
+
 	/** save doc id to url map **/
-	public static void saveDocIdToUrlMap(HashMap<Integer, String> docIdToUrlMap, String path) {
+	public static void saveDocIdToUrlMap(Map<Integer, String> docIdToUrlMap, String path) {
 		PrintWriter writer = null;
 		try {
 			writer = new PrintWriter(new File(path));

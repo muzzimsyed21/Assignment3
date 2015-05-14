@@ -6,8 +6,9 @@ import ir.assignments.four.util.Util;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,8 +16,8 @@ import org.json.JSONObject;
 public class CreateIndex {
 
 	/** returns term to term id map **/
-	public static HashMap<String, Integer> createTermToTermIdMap(List<File> files) {
-		HashMap<String, Integer> map = new HashMap<String, Integer>();
+	public static Map<String, Integer> createTermToTermIdMap(List<File> files) {
+		Map<String, Integer> map = new TreeMap<String, Integer>();
 
 		int index = 0;
 		for (File file : files) {
@@ -40,12 +41,12 @@ public class CreateIndex {
 	}
 
 	/** returns term id to term frequency map **/
-	public static HashMap<Integer, Integer> createTermIdToTermFrequencyMap(List<File> files,
-			HashMap<String, Integer> termToTermIdMap) {
+	public static Map<Integer, Integer> createTermIdToTermFrequencyMap(List<File> files,
+			Map<String, Integer> termToTermIdMap) {
 
 		int mapSize = termToTermIdMap.size();
 
-		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>(mapSize);
+		Map<Integer, Integer> map = new TreeMap<Integer, Integer>();
 
 		for (int i = 0; i < mapSize; ++i) {
 			map.put(i, 0);
@@ -70,17 +71,17 @@ public class CreateIndex {
 	}
 
 	/** returns doc id to term id map **/
-	public static HashMap<Integer, List<Integer>> createDocIdToTermIdsMap(List<File> files,
-			HashMap<String, Integer> termToTermIdMap) {
+	public static Map<Integer, List<Integer>> createDocIdToTermIdsMap(List<File> files,
+			Map<String, Integer> termToTermIdMap) {
 
 		int mapSize = files.size();
-		
-		HashMap<Integer, List<Integer>> map = new HashMap<Integer, List<Integer>>();
+
+		Map<Integer, List<Integer>> map = new TreeMap<Integer, List<Integer>>();
 
 		for (int i = 0; i < mapSize; ++i) {
 			map.put(i, new ArrayList<Integer>());
 		}
-		
+
 		for (File file : files) {
 			FileDumpObject fdo = null;
 			try {
@@ -100,8 +101,8 @@ public class CreateIndex {
 	}
 
 	/** returns doc id to url map **/
-	public static HashMap<Integer, String> createDocIdToURLMap(List<File> files) {
-		HashMap<Integer, String> map = new HashMap<Integer, String>();
+	public static Map<Integer, String> createDocIdToURLMap(List<File> files) {
+		Map<Integer, String> map = new TreeMap<Integer, String>();
 
 		for (File file : files) {
 			FileDumpObject fdo = null;
