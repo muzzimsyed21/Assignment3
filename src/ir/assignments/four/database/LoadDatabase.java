@@ -14,15 +14,18 @@ public class LoadDatabase {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		//List<File> files = Util.getFilesInPath(IndexerLocations.fileDump);
-		
+
 		//construct and initiate database
 		ICSDumpDatabase termDatabase = new ICSDumpDatabase("root", "Password1"); 
-		//termDatabase.create(); //database name => "ICSDump" call this only once!
+		termDatabase.create(); //database name => "ICSDump" call this only once!
 		
 		
 		//store termToTermId into database
 		termDatabase.insertTermToTermId(LoadIndex.loadTermToTermIdMap(IndexerLocations.termToTermIdCSV));
-		
+		//store termToTermId into database
+		//termDatabase.insertTermIdToTerm(LoadIndex.loadTermIdToTermMap()); 		
+		//termDatabase.insertDocIdToTermId(LoadIndex.loadTermIdToTermFrequencyMap(IndexerLocations.termIdToTermFrequencyCSV));
+		//termDatabase.insertDocIdToTermId(LoadIndex.loadDocIdToTermIdsMap(IndexerLocations.docIdToTermIdCSV));
 		
 
 	}

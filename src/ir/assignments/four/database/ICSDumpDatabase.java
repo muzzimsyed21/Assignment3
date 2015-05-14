@@ -44,14 +44,13 @@ public class ICSDumpDatabase {
 		try {
 
 			connect();
-			Statement tableStatement = connection.createStatement();
-			System.out.println("Loaded"); 
-			/*			String tableName = "Terms"; 
-					    String table = "CREATE TABLE "+tableName+
-				                  		" (id INTEGER not NULL, "+
-				                  		"term VARCHAR(255);"; 
+			Statement tableStatement = connection.createStatement(); 
+			String tableName = "Terms"; 
+			String table = "CREATE TABLE "+tableName+
+				           "(id INTEGER NOT NULL, "+
+				           "term VARCHAR(255));"; 
 					    
-						tableStatement.executeUpdate(table); */
+			tableStatement.executeUpdate(table); 
 
 			//			for (Integer id: termIdToTermMap.keySet()){
 			//
