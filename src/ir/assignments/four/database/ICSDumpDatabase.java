@@ -33,18 +33,19 @@ public class ICSDumpDatabase {
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 
 	}
 
-	public void insert() {
+	public void insertTermToTermId(HashMap<String, Integer> map) {
 
 		try {
 
 			connect();
 			Statement tableStatement = connection.createStatement();
-
+			System.out.println("Loaded"); 
 			/*			String tableName = "Terms"; 
 					    String table = "CREATE TABLE "+tableName+
 				                  		" (id INTEGER not NULL, "+
@@ -67,6 +68,73 @@ public class ICSDumpDatabase {
 		}
 
 	}
+
+	public void insertTermIdToTerm(){
+
+		try {
+
+			connect();
+			Statement tableStatement = connection.createStatement();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void insertTermIdToTermFrequency(){
+		
+		try {
+
+			connect();
+			Statement tableStatement = connection.createStatement();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+	}
+
+	public void insertDocIdToTermId(){
+		
+		try {
+
+			connect();
+			Statement tableStatement = connection.createStatement();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+	}
+
+	public void insertTermIdToDocId(){
+
+		try {
+
+			connect();
+			Statement tableStatement = connection.createStatement();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	public void insertDocIdToUrl(){
+		
+		try {
+
+			connect();
+			Statement tableStatement = connection.createStatement();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+	}
+
 
 	private void connect() throws SQLException {
 
