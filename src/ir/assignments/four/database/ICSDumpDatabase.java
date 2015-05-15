@@ -45,15 +45,13 @@ public class ICSDumpDatabase {
 		}
 
 	}
-<<<<<<< HEAD
 	
 	private void initDb(){
 		
-=======
 
+	}
 	public void insertTermToTermId(Map<String, Integer> map) {
 
->>>>>>> 403a3653de817646394324ff5fa87f1b025a5a24
 		try {
 			
 			Connection connection = getConnection();
