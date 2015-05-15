@@ -107,7 +107,20 @@ public class ICSDumpDatabase {
 		System.out.println("Initialized DocIdToUrlId table");
 	}
 	
-	//create insert functions
+	public void insertTermToTermIdTable(){
+		
+		
+	}
+	
+	public void insertDocIdToTermIdTable(){
+		
+		
+	}
+
+	public void insertDocIDToUrlIdTable(){
+		
+		
+	}
 	
 	private Connection getConnection() throws SQLException{
 		
