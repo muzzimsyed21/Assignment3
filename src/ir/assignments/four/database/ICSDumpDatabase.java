@@ -5,17 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-<<<<<<< HEAD
 import java.util.HashMap;
 import java.util.Properties;
-=======
 import java.util.Map;
->>>>>>> 403a3653de817646394324ff5fa87f1b025a5a24
 import java.util.Scanner;
 
 public class ICSDumpDatabase {
-
-	private Map<Integer, String> termIdToTermMap;
+	
 	private String username; 
 	private String password; 	
 	private String databaseName = null;
@@ -48,27 +44,23 @@ public class ICSDumpDatabase {
 	
 	private void initDb(){
 		
-
-	}
-	public void insertTermToTermId(Map<String, Integer> map) {
-
 		try {
 			
 			Connection connection = getConnection();
 			String qCreateDb = String.format("create database if not exists %s;", this.databaseName);
 			PreparedStatement statement = connection.prepareStatement(qCreateDb);
 			statement.executeUpdate();
-			connection.close(); 
-			setConnectionAfterDatabaseCreation(); 
+			connection.close();
 			System.out.println("Initialized database");
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
+		} 		
+		
 
-	
 	}
+	
 
 	private void initTermToTermIdTable() throws SQLException {
 		
@@ -89,9 +81,9 @@ public class ICSDumpDatabase {
 		
 		String qCreateTblTerms = "CREATE TABLE IF NOT EXISTS icsdump.docidtotermid "
 				+ "(docid INT NOT NULL,"
-				+ "termID INT,"
-				+ "PRIMARY KEY (docid)"
-				+ "FOREIGN KEY (termID) REFERENCES termtotermid(termID));"; 
+				+ "termid INT,"
+				+ "PRIMARY KEY (docid),"
+				+ "FOREIGN KEY (termid) REFERENCES termtotermid(termid));"; 
 		
 		statement = this.connection.prepareStatement(qCreateTblTerms);
 		statement.executeUpdate();
@@ -106,7 +98,7 @@ public class ICSDumpDatabase {
 		String qCreateTblTerms = "CREATE TABLE IF NOT EXISTS icsdump.docidtourlid "
 				+ "(urlid INT NOT NULL,"
 				+ "docid INT,"
-				+ "PRIMARY KEY (urlid)"
+				+ "PRIMARY KEY (urlid),"
 				+ "FOREIGN KEY (docid) REFERENCES docidtotermid(docid));"; 
 		
 		
