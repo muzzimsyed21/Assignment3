@@ -3,6 +3,7 @@ package ir.assignments.four.database;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ir.assignments.four.indexer.CreateIndex;
 import ir.assignments.four.indexer.IndexerLocations;
@@ -20,6 +21,9 @@ public class LoadDatabase {
 		termDatabase.create(); //database name => "ICSDump" call this only once!
 		
 		//store termToTermId (both ways)
+		Map<String, Integer> termIdToTermMap = LoadIndex.loadTermToTermIdMap(IndexerLocations.termToTermIdCSV); 
+		termDatabase.insertTermToTermIdTable(termIdToTermMap); 
+		
 		
 		//store DocIdToTermId (both ways)
 		

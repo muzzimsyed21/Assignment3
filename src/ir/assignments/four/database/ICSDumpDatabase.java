@@ -1,14 +1,21 @@
 package ir.assignments.four.database;
 
+import ir.assignments.four.indexer.IndexerLocations;
+import ir.assignments.four.util.Util;
+
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Properties;
 import java.util.Map;
 import java.util.Scanner;
+
+import com.sun.corba.se.spi.orbutil.fsm.Guard.Result;
 
 public class ICSDumpDatabase {
 	
@@ -16,6 +23,7 @@ public class ICSDumpDatabase {
 	private String password; 	
 	private String databaseName = null;
 	private Connection connection = null; 
+	List<File> files = Util.getFilesInPath(IndexerLocations.fileDump);
 
 	public ICSDumpDatabase(String username, String password, String databaseName) {
 		this.username = username;
@@ -107,9 +115,38 @@ public class ICSDumpDatabase {
 		System.out.println("Initialized DocIdToUrlId table");
 	}
 	
-	public void insertTermToTermIdTable(){
+	public int insertTermToTermIdTable(Map<String, Integer> map){
 		
+		final String insertQuery = "INSERT INTO termtotermid"
+				+ "(term,termid) VALUES (?,?);";
 		
+		PreparedStatement insert = null;
+		int result = 0; 
+		try {
+			
+			insert = this.connection.prepareStatement(insertQuery);
+			for(String m: map.keySet()){
+				
+				insert.setString(1, m);
+				insert.setInt(2, map.get(m));
+				insert.addBatch();
+				
+			}
+			
+			int[] batch = insert.executeBatch();
+			result = batch.length;
+			insert.close();
+			
+			
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+
+			System.out.println("Stored TermToTermIdTable"); 
+			
+			return result; 
+			
 	}
 	
 	public void insertDocIdToTermIdTable(){
