@@ -8,15 +8,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-<<<<<<< HEAD
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 import java.util.Map;
 import java.util.Scanner;
-=======
->>>>>>> a261fe4200189ed365d73385f290f7478e720a3b
 
 import com.sun.corba.se.spi.orbutil.fsm.Guard.Result;
 
@@ -25,12 +22,8 @@ public class ICSDumpDatabase {
 	private String username;
 	private String password;
 	private String databaseName = null;
-<<<<<<< HEAD
-	private Connection connection = null; 
-	List<File> files = Util.getFilesInPath(IndexerLocations.fileDump);
-=======
 	private Connection connection = null;
->>>>>>> a261fe4200189ed365d73385f290f7478e720a3b
+	List<File> files = Util.getFilesInPath(IndexerLocations.fileDump);
 
 	public ICSDumpDatabase(String username, String password, String databaseName) {
 		this.username = username;
@@ -61,15 +54,14 @@ public class ICSDumpDatabase {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	private void initTermToTermIdTable() throws SQLException {
 		PreparedStatement statement;
-		
+
 		String qCreateTblTerms = "CREATE TABLE IF NOT EXISTS icsdump.termtotermid "
 				+ "(termid INT NOT NULL," + "term VARCHAR(64)," + "PRIMARY KEY (termid));";
-		
+
 		statement = this.connection.prepareStatement(qCreateTblTerms);
 		statement.executeUpdate();
 		System.out.println("Initialized termToTermId table");
@@ -99,60 +91,50 @@ public class ICSDumpDatabase {
 		statement.executeUpdate();
 		System.out.println("Initialized DocIdToUrlId table");
 	}
-<<<<<<< HEAD
-	
-	public int insertTermToTermIdTable(Map<String, Integer> map){
-		
-		final String insertQuery = "INSERT INTO termtotermid"
-				+ "(term,termid) VALUES (?,?);";
-		
+
+	public int insertTermToTermIdTable(Map<String, Integer> map) {
+		final String insertQuery = "INSERT INTO termtotermid" + "(term,termid) VALUES (?,?);";
+
 		PreparedStatement insert = null;
-		int result = 0; 
+		int result = 0;
 		try {
-			
+
 			insert = this.connection.prepareStatement(insertQuery);
-			for(String m: map.keySet()){
-				
+			for (String m : map.keySet()) {
+
 				insert.setString(1, m);
 				insert.setInt(2, map.get(m));
 				insert.addBatch();
-				
+
 			}
-			
+
 			int[] batch = insert.executeBatch();
 			result = batch.length;
 			insert.close();
-			
-			
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} 
 
-			System.out.println("Stored TermToTermIdTable"); 
-			
-			return result; 
-			
-	}
-	
-	public void insertDocIdToTermIdTable(){
-		
-		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		System.out.println("Stored TermToTermIdTable");
+
+		return result;
 	}
 
-	public void insertDocIDToUrlIdTable(){
-		
-		
+	public void insertDocIdToTermIdTable() {
+
 	}
-	
-	private Connection getConnection() throws SQLException{
-		
-		
-		Connection connection= DriverManager.getConnection("jdbc:mysql://localhost/?user=" 
-		+this.username + "&password=" + this.password);
-		
-		return connection; 
-=======
+
+	public void insertDocIDToUrlIdTable() {
+
+	}
+
+	private Connection getConnection() throws SQLException {
+		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/?user="
+				+ this.username + "&password=" + this.password);
+		return connection;
+	}
 
 	//create insert functions
 
@@ -160,14 +142,13 @@ public class ICSDumpDatabase {
 		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/?user="
 				+ this.username + "&password=" + this.password);
 		return connection;
->>>>>>> a261fe4200189ed365d73385f290f7478e720a3b
 	}
 
 	private void setConnectionAfterDatabaseCreation() throws SQLException {
 		this.connection = DriverManager.getConnection("jdbc:mysql://localhost/" + this.databaseName
 				+ "?user=" + this.username + "&password=" + this.password);
 	}
-	
+
 	/** close connection object **/
 	public void close() {
 		try {
