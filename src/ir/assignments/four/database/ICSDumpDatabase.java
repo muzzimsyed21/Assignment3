@@ -127,9 +127,9 @@ public class ICSDumpDatabase {
 		PreparedStatement statement;
 
 		String qCreateTblTerms = "CREATE TABLE IF NOT EXISTS icsdump.docidtourl "
-				+ "(docid INT NOT NULL," + "url VARCHAR(64),"
-				+ "FOREIGN KEY (docid) REFERENCES docidtotermid(docid));";
-
+				+ "(docid INT NOT NULL," + "url VARCHAR(255));";
+		
+		//,"+ "FOREIGN KEY (docid) REFERENCES docidtotermid(docid) <<==== UPDATE CONSTRAINTS
 		statement = this.connection.prepareStatement(qCreateTblTerms);
 		statement.executeUpdate();
 		System.out.println("Initialized DocIdToUrl table");
@@ -143,7 +143,7 @@ public class ICSDumpDatabase {
 		PreparedStatement insert1 = null;
 		PreparedStatement insert2 = null;
 		
-		System.out.println(map); 
+		
 		int result = 0;
 		try {
 
@@ -222,6 +222,8 @@ public class ICSDumpDatabase {
 		PreparedStatement insert2 = null;
 		
 		int result = 0;
+		
+		//System.out.println(map); 
 		try {
 
 			insert1 = this.connection.prepareStatement(DocIdToTermIdQuery);
@@ -263,7 +265,8 @@ public class ICSDumpDatabase {
 		
 		PreparedStatement insert = null;
 		int result = 0;
-		
+
+		System.out.println(map); 
 		try {
 
 			insert = this.connection.prepareStatement(termIdToTermFreqQuery);

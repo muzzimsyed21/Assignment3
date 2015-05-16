@@ -25,14 +25,14 @@ public class LoadDatabase {
 		//store TermToTermId and TermIdToTerm
 		termDatabase.insertTermAndTermIDTables(CreateIndex.createTermToTermIdMap(files));
 		
-		//store TermIdToTermFreq
+		//store TermIdToTermFreq --How to store this one given Map<Integer, List<Integer>> as input.
 		//termDatabase.insertTermIdToTermFrequencyTable(CreateIndex.createDocIdToTermIdsMap(files, Indexer.termToTermIdMap));
 		
-		//store DocIdToTermId and TermIdToDocId
+		//store DocIdToTermId and TermIdToDocId ------(GIVING A NULLPTR ERROR WHEN GETTING THIS INDEX) -----
 		//termDatabase.insertDocIdsAndTermIdTables(CreateIndex.createDocIdToTermIdsMap(files, Indexer.termToTermIdMap)); 
 		
 		//store DocIdToUrl 
-		//termDatabase.insertDocIDToUrlTable(CreateIndex.createDocIdToURLMap(files));
+		termDatabase.insertDocIDToUrlTable(CreateIndex.createDocIdToURLMap(files)); //NEEDS CONSTRAINTS UPDATED
 		
 		//close connection 
 		termDatabase.close();
