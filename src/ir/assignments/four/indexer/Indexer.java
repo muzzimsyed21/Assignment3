@@ -13,7 +13,7 @@ public class Indexer {
 	private final static boolean CREATEFLAG = false;
 
 	/** term to term id map **/
-	private static Map<String, Integer> termToTermIdMap;
+	public static Map<String, Integer> termToTermIdMap;
 
 	/** term id to term map **/
 	private static Map<Integer, String> termIdToTermMap;
@@ -22,13 +22,13 @@ public class Indexer {
 	private static Map<Integer, Integer> termIdToTermFrequencyMap;
 
 	/** doc id to term id map **/
-	private static Map<Integer, List<Integer>> docIdToTermIdsMap;
+	public static Map<Integer, List<Integer>> docIdToTermIdsMap;
 
 	/** term id to doc id map **/
 	private static Map<Integer, Set<Integer>> termIdToDocIdMap;
 
 	/** doc id to url map **/
-	private static Map<Integer, String> docIdToUrlMap;
+	public static Map<Integer, String> docIdToUrlMap;
 
 	public static void main(String[] args) {
 		List<File> files = Util.getFilesInPath(IndexerLocations.fileDump);

@@ -35,7 +35,7 @@ public class ICSDumpDatabase {
 		try {
 			
 			initDb();
-			setConnectionAfterDatabaseCreation();
+			setConnectionAfterDatabaseCreation(); 
 			initTermToTermIdTable();
 			initTermIdToTermTable(); 
 			initTermIdToTermFrequency(); 
@@ -138,12 +138,13 @@ public class ICSDumpDatabase {
 
 	public int insertTermAndTermIDTables(Map<String, Integer> map) {
 		
-		final String termToTermIdQuery = "INSERT INTO termtotermid" + "(term,termid) VALUES (?,?);";
+		final String termToTermIdQuery = "INSERT INTO termtotermid" + "(termid,term) VALUES (?,?);";
 		final String termIdToTermQuery = "INSERT INTO termidtoterm" + "(termid,term) VALUES (?,?);";
 		
 		PreparedStatement insert1 = null;
 		PreparedStatement insert2 = null;
 		
+		System.out.println(map); 
 		int result = 0;
 		try {
 
@@ -178,7 +179,7 @@ public class ICSDumpDatabase {
 		return result;
 	}
 	
-	public int insertTermIdToTermFrequencyTable(Map<Integer, Integer> map){
+	public int insertTermIdToTermFrequencyTable(Map<Integer, List<Integer>> map){
 		
 		final String termIdToTermFreqQuery = "INSERT INTO termidtotermfrequency" + "(termid,termFrequency) VALUES (?,?);";		
 		
@@ -297,10 +298,11 @@ public class ICSDumpDatabase {
 		return connection;
 	}
 
-	private void setConnectionAfterDatabaseCreation() throws SQLException {
+	public void setConnectionAfterDatabaseCreation() throws SQLException {
 		this.connection = DriverManager.getConnection("jdbc:mysql://localhost/" + this.databaseName
 				+ "?user=" + this.username + "&password=" + this.password);
 	}
+	
 
 	/** close connection object **/
 	public void close() {
