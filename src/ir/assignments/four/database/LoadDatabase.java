@@ -13,20 +13,25 @@ import ir.assignments.four.util.Util;
 public class LoadDatabase {
 
 	public static void main(String[] args) {
-		//List<File> files = Util.getFilesInPath(IndexerLocations.fileDump);
+		List<File> files = Util.getFilesInPath(IndexerLocations.fileDump);
 
 		//construct and initiate database
 		ICSDumpDatabase termDatabase = new ICSDumpDatabase("root", "Password1", "ICSDump");
 		termDatabase.create(); //database name => "ICSDump" call this only once!
 		termDatabase.close();
-		//store termToTermId (both ways)
-		Map<String, Integer> termIdToTermMap = LoadIndex.loadTermToTermIdMap(IndexerLocations.termToTermIdCSV);
-		termDatabase.insertTermToTermIdTable(termIdToTermMap);
-
-		//store DocIdToTermId (both ways)
-
-		//store DocIDToUrl (both ways) 
-
+		
+		
+		//store TermToTermId and TermIdToTerm
+		termDatabase.insertTermAndTermIDTables(CreateIndex.createTermToTermIdMap(files));
+		
+		//store TermIdToTermFreq
+		//termDatabase.insertDocIdToTermIdTable(CreateIndex.createDocIdToTermIdsMap(files, termToTermIdMap));
+		
+		//store DocIdToTermId and TermIdToDocId
+		//termDatabase.insertDocIDToUrlIdTable(CreateIndex.createDocIdToURLMap(files));
+		
+		//store DocIdToUrl 
+		//termDatabase.
 	}
 
 }
