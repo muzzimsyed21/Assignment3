@@ -3,8 +3,8 @@ package ir.assignments.four.indexer;
 public class IndexerLocations {
 	
 	/** file dump path **/
-	public static final String fileDump = "csv/";
-	//public static final String fileDump = "FileDump/";
+	//public static final String fileDump = "csv/";
+	public static final String fileDump = "FileDump/";
 	
 	/** csv path **/
 	public static final String csvPath = "csv/";

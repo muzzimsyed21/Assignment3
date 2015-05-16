@@ -23,7 +23,7 @@ public class LoadDatabase {
 		
 		
 		//store TermToTermId and TermIdToTerm
-		//termDatabase.insertTermAndTermIDTables(CreateIndex.createTermToTermIdMap(files));
+		termDatabase.insertTermAndTermIDTables(CreateIndex.createTermToTermIdMap(files));
 		
 		//store TermIdToTermFreq
 		//termDatabase.insertTermIdToTermFrequencyTable(CreateIndex.createDocIdToTermIdsMap(files, Indexer.termToTermIdMap));

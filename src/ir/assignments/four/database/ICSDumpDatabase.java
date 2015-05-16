@@ -23,7 +23,6 @@ public class ICSDumpDatabase {
 	private String password;
 	private String databaseName = null;
 	private Connection connection = null;
-	List<File> files = Util.getFilesInPath(IndexerLocations.fileDump);
 
 	public ICSDumpDatabase(String username, String password, String databaseName) {
 		this.username = username;
@@ -138,7 +137,7 @@ public class ICSDumpDatabase {
 
 	public int insertTermAndTermIDTables(Map<String, Integer> map) {
 		
-		final String termToTermIdQuery = "INSERT INTO termtotermid" + "(termid,term) VALUES (?,?);";
+		final String termToTermIdQuery = "INSERT INTO termtotermid" + "(term,termid) VALUES (?,?);";
 		final String termIdToTermQuery = "INSERT INTO termidtoterm" + "(termid,term) VALUES (?,?);";
 		
 		PreparedStatement insert1 = null;
@@ -193,7 +192,7 @@ public class ICSDumpDatabase {
 			for (Integer m : map.keySet()) {
 
 				insert.setInt(1, m);
-				insert.setInt(2, map.get(m));
+				//insert.setInt(2, map.get(m));
 				insert.addBatch();
 
 			}
