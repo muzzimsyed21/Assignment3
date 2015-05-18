@@ -31,7 +31,7 @@ public class Indexer {
 	private static Map<Integer, String> docIdToUrlMap;
 
 	/** doc id to term id to TFIDF map **/
-	private static Map<Integer, Map<Integer, Integer>> docIdToTermIdToTFIDFMap;
+	private static Map<Integer, Map<Integer, Double>> docIdToTermIdToTFIDFMap;
 
 	public static void init() {
 		List<File> files = Util.getFilesInPath(IndexerLocations.fileDump);
@@ -89,7 +89,7 @@ public class Indexer {
 		System.out.println(getDocsWithTerm("ics"));
 		System.out.println(getTermFrequencyInDoc(9, "ics"));
 		*/
-		System.out.println(docIdToTermIdToTFIDFMap.keySet());
+		System.out.println(docIdToTermIdToTFIDFMap.get(2).values());
 
 		System.out.println("DONE");
 	}
@@ -154,7 +154,7 @@ public class Indexer {
 		return docIdToUrlMap;
 	}
 
-	public static Map<Integer, Map<Integer, Integer>> getDocIdToTermIdToTFIDFMap() {
+	public static Map<Integer, Map<Integer, Double>> getDocIdToTermIdToTFIDFMap() {
 		return docIdToTermIdToTFIDFMap;
 	}
 

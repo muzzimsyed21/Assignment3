@@ -134,8 +134,8 @@ public class LoadIndex {
 	}
 
 	/** save doc id to term id to tfidf from file **/
-	public static Map<Integer, Map<Integer, Integer>> loadDocIdToTermIdToTFIDFMap(String path) {
-		Map<Integer, Map<Integer, Integer>> map = new TreeMap<Integer, Map<Integer, Integer>>();
+	public static Map<Integer, Map<Integer, Double>> loadDocIdToTermIdToTFIDFMap(String path) {
+		Map<Integer, Map<Integer, Double>> map = new TreeMap<Integer, Map<Integer, Double>>();
 
 		String fileString = null;
 		try {

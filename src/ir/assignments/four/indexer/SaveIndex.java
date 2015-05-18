@@ -97,7 +97,7 @@ public class SaveIndex {
 
 	/** save doc id to term id to tfidf map **/
 	public static void saveDocIdToTermIdToTFIDFMap(
-			Map<Integer, Map<Integer, Integer>> docIdToTermIdToTFIDFMap, String path) {
+			Map<Integer, Map<Integer, Double>> docIdToTermIdToTFIDFMap, String path) {
 		PrintWriter writer = null;
 		try {
 			writer = new PrintWriter(new File(path));
