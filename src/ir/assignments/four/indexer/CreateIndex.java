@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.json.JSONException;
@@ -124,6 +125,7 @@ public class CreateIndex {
 	public static Map<Integer, Map<Integer, Double>> createDocIdToTermIdToTFIDFMap(
 			List<File> files,
 			Map<Integer, List<Integer>> docIdToTermIdsMap,
+			Map<Integer, Set<Integer>> termIdToDocIdsMap,
 			Map<Integer, Integer> termIdToTermFrequencyMap) {
 		Map<Integer, Map<Integer, Double>> map = new TreeMap<Integer, Map<Integer, Double>>();
 
@@ -146,7 +148,7 @@ public class CreateIndex {
 							++termFreq;
 						}
 					}
-					termIdToTDIDFMap.put(termId, termFreq * (Math.log(docId)));
+					termIdToTDIDFMap.put(termId, termFreq * (Math.log(termIdToDocIdsMap.get(termId).size())));
 				}
 				map.put(docId, termIdToTDIDFMap);
 			}

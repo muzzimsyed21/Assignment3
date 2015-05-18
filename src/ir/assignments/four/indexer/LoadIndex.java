@@ -146,11 +146,27 @@ public class LoadIndex {
 		int docID = 0;
 
 		if (fileString != null) {
-			/*
-			for (String url : fileString.split("\n")) {
-				map.put(docID++, url.trim());
+			boolean first, second;
+			int termId = 0;
+			for (String split : fileString.split("\n")) {
+				first = true;
+				second = false;
+				for (String s : Util.tokenize(split)) {
+					if (first) {
+						docID = Integer.parseInt(s);
+						if (!map.containsKey(docID)) {
+							map.put(docID, new TreeMap<Integer, Double>());
+						}
+						first = false;
+						second = true;
+					} else if (second) {
+						termId = Integer.parseInt(s);
+						second = false;
+					} else {
+						map.get(docID).put(termId, Double.parseDouble(s));
+					}
+				}
 			}
-			*/
 		}
 
 		return map;

@@ -105,11 +105,19 @@ public class SaveIndex {
 			e.printStackTrace();
 		}
 
-		/*
-		for (int i = 0; i < docIdToUrlMap.size(); ++i) {
-			writer.println(docIdToUrlMap.get(i));
+		StringBuilder s;
+		Map<Integer, Double> termIdtoTFIDF;
+		for (int docId = 0; docId < docIdToTermIdToTFIDFMap.size(); ++docId) {
+			termIdtoTFIDF = docIdToTermIdToTFIDFMap.get(docId);
+			for (int termId : termIdtoTFIDF.keySet()) {
+				s = new StringBuilder();
+				s.append(docId + ",");
+				s.append(termId + ",");
+				s.append(termIdtoTFIDF.get(termId));
+				writer.println(s.toString());
+			}
 		}
-		*/
+		
 		if (writer != null) {
 			writer.close();
 		}
