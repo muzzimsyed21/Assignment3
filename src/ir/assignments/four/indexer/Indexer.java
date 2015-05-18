@@ -10,10 +10,10 @@ import java.util.Set;
 public class Indexer {
 
 	/** toggle true to recreate index **/
-	private final static boolean CREATEFLAG = false;
+	private final static boolean CREATEFLAG = true;
 
 	/** term to term id map **/
-	public static Map<String, Integer> termToTermIdMap;
+	private static Map<String, Integer> termToTermIdMap;
 
 	/** term id to term map **/
 	private static Map<Integer, String> termIdToTermMap;
@@ -22,28 +22,31 @@ public class Indexer {
 	private static Map<Integer, Integer> termIdToTermFrequencyMap;
 
 	/** doc id to term id map **/
-	public static Map<Integer, List<Integer>> docIdToTermIdsMap;
+	private static Map<Integer, List<Integer>> docIdToTermIdsMap;
 
 	/** term id to doc id map **/
 	private static Map<Integer, Set<Integer>> termIdToDocIdMap;
 
 	/** doc id to url map **/
-	public static Map<Integer, String> docIdToUrlMap;
+	private static Map<Integer, String> docIdToUrlMap;
 
-	public static void main(String[] args) {
+	public static void init() {
 		List<File> files = Util.getFilesInPath(IndexerLocations.fileDump);
-		
+
 		if (CREATEFLAG) {
 			termToTermIdMap = CreateIndex.createTermToTermIdMap(files);
 			termIdToTermMap = LoadIndex.loadTermIdToTermMap(termToTermIdMap);
-			termIdToTermFrequencyMap = CreateIndex.createTermIdToTermFrequencyMap(files, termToTermIdMap);
+			termIdToTermFrequencyMap = CreateIndex.createTermIdToTermFrequencyMap(files,
+					termToTermIdMap);
 			docIdToTermIdsMap = CreateIndex.createDocIdToTermIdsMap(files, termToTermIdMap);
-			termIdToDocIdMap = LoadIndex.loadTermIdToDocIdMap(docIdToTermIdsMap, termToTermIdMap.size());
+			termIdToDocIdMap = LoadIndex.loadTermIdToDocIdMap(docIdToTermIdsMap,
+					termToTermIdMap.size());
 			docIdToUrlMap = CreateIndex.createDocIdToURLMap(files);
 
 			// save maps to .csv
 			SaveIndex.saveTermToTermIdMap(termIdToTermMap, IndexerLocations.termToTermIdCSV);
-			SaveIndex.saveTermIdToTermFrequencyMap(termIdToTermFrequencyMap, IndexerLocations.termIdToTermFrequencyCSV);
+			SaveIndex.saveTermIdToTermFrequencyMap(termIdToTermFrequencyMap,
+					IndexerLocations.termIdToTermFrequencyCSV);
 			SaveIndex.saveDocIdToTermIdsMap(docIdToTermIdsMap, IndexerLocations.docIdToTermIdCSV);
 			SaveIndex.saveDocIdToUrlMap(docIdToUrlMap, IndexerLocations.docIdToUrlCSV);
 
@@ -52,10 +55,16 @@ public class Indexer {
 			termIdToTermMap = LoadIndex.loadTermIdToTermMap(termToTermIdMap);
 			termIdToTermFrequencyMap = LoadIndex.loadTermIdToTermFrequencyMap(IndexerLocations.termIdToTermFrequencyCSV);
 			docIdToTermIdsMap = LoadIndex.loadDocIdToTermIdsMap(IndexerLocations.docIdToTermIdCSV);
-			termIdToDocIdMap = LoadIndex.loadTermIdToDocIdMap(docIdToTermIdsMap, termToTermIdMap.size());
+			termIdToDocIdMap = LoadIndex.loadTermIdToDocIdMap(docIdToTermIdsMap,
+					termToTermIdMap.size());
 			docIdToUrlMap = LoadIndex.loadDocIdToUrlMap(IndexerLocations.docIdToUrlCSV);
 		}
+	}
 
+	public static void main(String[] args) {
+
+		init();
+		
 		/*
 		System.out.println(termToTermIdMap.size());
 		System.out.println(termIdToTermMap.size());
@@ -80,7 +89,7 @@ public class Indexer {
 	public static int getTermFrequencyInDoc(int docID, String term) {
 		List<Integer> termIDs = docIdToTermIdsMap.get(docID);
 		int termID = getTermId(term);
-		
+
 		if (termIDs != null && termID != -1) {
 			int count = 0;
 			for (int id : termIDs) {
@@ -93,7 +102,7 @@ public class Indexer {
 			return -1;
 		}
 	}
-	
+
 	/** returns term id of term **/
 	public static int getTermId(String term) {
 		if (termToTermIdMap.containsKey(term)) {
@@ -110,6 +119,30 @@ public class Indexer {
 			return termIdToDocIdMap.get(termID);
 		}
 		return null;
+	}
+
+	public static Map<String, Integer> getTermToTermIdMap() {
+		return termToTermIdMap;
+	}
+
+	public static Map<Integer, String> getTermIdToTermMap() {
+		return termIdToTermMap;
+	}
+
+	public static Map<Integer, Integer> getTermIdToTermFrequencyMap() {
+		return termIdToTermFrequencyMap;
+	}
+
+	public static Map<Integer, List<Integer>> getDocIdToTermIdsMap() {
+		return docIdToTermIdsMap;
+	}
+
+	public static Map<Integer, Set<Integer>> getTermIdToDocIdMap() {
+		return termIdToDocIdMap;
+	}
+
+	public static Map<Integer, String> getDocIdToUrlMap() {
+		return docIdToUrlMap;
 	}
 
 }
