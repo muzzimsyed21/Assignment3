@@ -34,7 +34,7 @@ public class SaveIndex {
 			System.err.println("SaveError (saveTermToTermIdMap): termIdToTermMap must be type TreeMap");
 			return;
 		}
-		
+
 		PrintWriter writer = null;
 		try {
 			writer = new PrintWriter(new File(path));
@@ -90,6 +90,26 @@ public class SaveIndex {
 			writer.println(docIdToUrlMap.get(i));
 		}
 
+		if (writer != null) {
+			writer.close();
+		}
+	}
+
+	/** save doc id to term id to tfidf map **/
+	public static void saveDocIdToTermIdToTFIDFMap(
+			Map<Integer, Map<Integer, Integer>> docIdToTermIdToTFIDFMap, String path) {
+		PrintWriter writer = null;
+		try {
+			writer = new PrintWriter(new File(path));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		/*
+		for (int i = 0; i < docIdToUrlMap.size(); ++i) {
+			writer.println(docIdToUrlMap.get(i));
+		}
+		*/
 		if (writer != null) {
 			writer.close();
 		}

@@ -120,6 +120,37 @@ public class CreateIndex {
 		return map;
 	}
 
+	/** returns doc id to term id to tfidf map **/
+	public static Map<Integer, Map<Integer, Integer>> createDocIdToTermIdToTFIDFMap(
+			List<File> files,
+			Map<Integer, List<Integer>> docIdToTermIdsMap,
+			Map<Integer, Integer> termIdToTermFrequencyMap) {
+		Map<Integer, Map<Integer, Integer>> map = new TreeMap<Integer, Map<Integer, Integer>>();
+
+		int docId;
+		for (File file : files) {
+			FileDumpObject fdo = null;
+			Map<Integer, Integer> termIdToTDIDFMap = new TreeMap<Integer, Integer>();
+			try {
+				fdo = fileToFDO(file);
+			} catch (JSONException | IOException e) {
+			}
+
+			if (fdo != null) {
+				docId = fdo.getId();
+				/*
+				for (int termId : docIdToTermIdsMap.get(docId)) {
+					termIdToTDIDFMap.put(key, value);
+				}
+				map.put();
+				*/
+			}
+			fdo = null;
+		}
+
+		return map;
+	}
+
 	/** convert File to FileDumpObject **/
 	public static FileDumpObject fileToFDO(File file) throws JSONException, IOException {
 		return new FileDumpObject(new JSONObject(Util.readFile(file)));

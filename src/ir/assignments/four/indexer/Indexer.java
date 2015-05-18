@@ -30,6 +30,9 @@ public class Indexer {
 	/** doc id to url map **/
 	private static Map<Integer, String> docIdToUrlMap;
 
+	/** doc id to term id to TFIDF map **/
+	private static Map<Integer, Map<Integer, Integer>> docIdToTermIdToTFIDFMap;
+
 	public static void init() {
 		List<File> files = Util.getFilesInPath(IndexerLocations.fileDump);
 
@@ -42,6 +45,8 @@ public class Indexer {
 			termIdToDocIdMap = LoadIndex.loadTermIdToDocIdMap(docIdToTermIdsMap,
 					termToTermIdMap.size());
 			docIdToUrlMap = CreateIndex.createDocIdToURLMap(files);
+			docIdToTermIdToTFIDFMap = CreateIndex.createDocIdToTermIdToTFIDFMap(files,
+					docIdToTermIdsMap, termIdToTermFrequencyMap);
 
 			// save maps to .csv
 			SaveIndex.saveTermToTermIdMap(termIdToTermMap, IndexerLocations.termToTermIdCSV);
@@ -49,6 +54,8 @@ public class Indexer {
 					IndexerLocations.termIdToTermFrequencyCSV);
 			SaveIndex.saveDocIdToTermIdsMap(docIdToTermIdsMap, IndexerLocations.docIdToTermIdCSV);
 			SaveIndex.saveDocIdToUrlMap(docIdToUrlMap, IndexerLocations.docIdToUrlCSV);
+			SaveIndex.saveDocIdToTermIdToTFIDFMap(docIdToTermIdToTFIDFMap,
+					IndexerLocations.docIdToTermIdToTFIDFCSV);
 
 		} else {
 			termToTermIdMap = LoadIndex.loadTermToTermIdMap(IndexerLocations.termToTermIdCSV);
@@ -58,29 +65,31 @@ public class Indexer {
 			termIdToDocIdMap = LoadIndex.loadTermIdToDocIdMap(docIdToTermIdsMap,
 					termToTermIdMap.size());
 			docIdToUrlMap = LoadIndex.loadDocIdToUrlMap(IndexerLocations.docIdToUrlCSV);
+			docIdToTermIdToTFIDFMap = LoadIndex.loadDocIdToTermIdToTFIDFMap(IndexerLocations.docIdToTermIdToTFIDFCSV);
 		}
 	}
 
 	public static void main(String[] args) {
 
 		init();
-		
+
 		/*
 		System.out.println(termToTermIdMap.size());
 		System.out.println(termIdToTermMap.size());
 		System.out.println(termIdToTermFrequencyMap.size());
-		System.out.println(docIdToTermIdMap.size());
+		System.out.println(docIdToTermIdsMap.size());
 		System.out.println(termIdToDocIdMap.size());
 		System.out.println(docIdToUrlMap.size());
-		
-		System.out.println(docIdToTermIdMap.get(2));
+
+		System.out.println(docIdToTermIdsMap.get(2));
 		System.out.println(termIdToDocIdMap.get(0));
 		System.out.println(docIdToUrlMap.get(0));
-		*/
 
 		System.out.println(getTermId("navigation"));
 		System.out.println(getDocsWithTerm("ics"));
 		System.out.println(getTermFrequencyInDoc(9, "ics"));
+		*/
+		System.out.println(docIdToTermIdToTFIDFMap.keySet());
 
 		System.out.println("DONE");
 	}
@@ -143,6 +152,10 @@ public class Indexer {
 
 	public static Map<Integer, String> getDocIdToUrlMap() {
 		return docIdToUrlMap;
+	}
+
+	public static Map<Integer, Map<Integer, Integer>> getDocIdToTermIdToTFIDFMap() {
+		return docIdToTermIdToTFIDFMap;
 	}
 
 }

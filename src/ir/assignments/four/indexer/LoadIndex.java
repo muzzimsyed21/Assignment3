@@ -133,4 +133,27 @@ public class LoadIndex {
 		return map;
 	}
 
+	/** save doc id to term id to tfidf from file **/
+	public static Map<Integer, Map<Integer, Integer>> loadDocIdToTermIdToTFIDFMap(String path) {
+		Map<Integer, Map<Integer, Integer>> map = new TreeMap<Integer, Map<Integer, Integer>>();
+
+		String fileString = null;
+		try {
+			fileString = Util.readFile(new File(path));
+		} catch (IOException e) {
+		}
+
+		int docID = 0;
+
+		if (fileString != null) {
+			/*
+			for (String url : fileString.split("\n")) {
+				map.put(docID++, url.trim());
+			}
+			*/
+		}
+
+		return map;
+	}
+
 }
