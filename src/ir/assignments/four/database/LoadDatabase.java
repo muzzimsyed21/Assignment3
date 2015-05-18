@@ -16,7 +16,7 @@ public class LoadDatabase {
 		termDatabase.create(); //database name => "ICSDump" call this only once!
 
 		// store TermToTermId
-		termDatabase.insertTermToTermIdTables(Indexer.getTermToTermIdMap());
+		termDatabase.insertTermToTermIdTable(Indexer.getTermToTermIdMap());
 
 		// store TermIdToTermFreq
 		termDatabase.insertTermIdToTermFrequencyTable(Indexer.getTermIdToTermFrequencyMap());

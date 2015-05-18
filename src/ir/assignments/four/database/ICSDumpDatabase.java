@@ -27,7 +27,7 @@ public class ICSDumpDatabase {
 			initDb();
 			setConnectionAfterDatabaseCreation();
 			initTermToTermIdTable();
-			initTermIdToTermTable();
+			//initTermIdToTermTable();
 			initTermIdToTermFrequency();
 			initDocIdToTermIdTable();
 			initTermIdToDocIdTable();
@@ -124,7 +124,7 @@ public class ICSDumpDatabase {
 		System.out.println("Initialized DocIdToUrl table");
 	}
 
-	public int insertTermToTermIdTables(Map<String, Integer> map) {
+	public int insertTermToTermIdTable(Map<String, Integer> map) {
 
 		final String termToTermIdQuery = "INSERT INTO termtotermid" + "(term,termid) VALUES (?,?);";
 		//final String termIdToTermQuery = "INSERT INTO termidtoterm" + "(termid,term) VALUES (?,?);";
@@ -160,7 +160,7 @@ public class ICSDumpDatabase {
 			e.printStackTrace();
 		}
 
-		System.out.println("TermToTermId and TermIDToTerm Tables Stored");
+		System.out.println("TermToTermId Table Stored");
 
 		return result;
 	}
