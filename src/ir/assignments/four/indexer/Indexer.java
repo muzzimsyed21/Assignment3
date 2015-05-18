@@ -45,8 +45,8 @@ public class Indexer {
 			termIdToDocIdsMap = LoadIndex.loadTermIdToDocIdMap(docIdToTermIdsMap,
 					termToTermIdMap.size());
 			docIdToUrlMap = CreateIndex.createDocIdToURLMap(files);
-			docIdToTermIdToTFIDFMap = CreateIndex.createDocIdToTermIdToTFIDFMap(files,
-					docIdToTermIdsMap, termIdToDocIdsMap, termIdToTermFrequencyMap);
+			docIdToTermIdToTFIDFMap = CreateIndex.createDocIdToTermIdToTFIDFMap(docIdToTermIdsMap,
+					termIdToDocIdsMap, termIdToTermFrequencyMap);
 
 			// save maps to .csv
 			SaveIndex.saveTermToTermIdMap(termIdToTermMap, IndexerLocations.termToTermIdCSV);
@@ -91,7 +91,7 @@ public class Indexer {
 		System.out.println(getTermFrequencyInDoc(9, "ics"));
 		System.out.println(docIdToTermIdToTFIDFMap.get(2).values());
 		*/
-		
+
 		System.out.println("DONE");
 	}
 

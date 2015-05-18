@@ -79,7 +79,7 @@ public class CreateIndex {
 
 		Map<Integer, List<Integer>> map = new TreeMap<Integer, List<Integer>>();
 
-		for (int i = 0; i < mapSize; ++i) {
+		for (int i = 0; i < mapSize - 1; ++i) {
 			map.put(i, new ArrayList<Integer>());
 		}
 
@@ -123,36 +123,26 @@ public class CreateIndex {
 
 	/** returns doc id to term id to tfidf map **/
 	public static Map<Integer, Map<Integer, Double>> createDocIdToTermIdToTFIDFMap(
-			List<File> files,
 			Map<Integer, List<Integer>> docIdToTermIdsMap,
 			Map<Integer, Set<Integer>> termIdToDocIdsMap,
 			Map<Integer, Integer> termIdToTermFrequencyMap) {
 		Map<Integer, Map<Integer, Double>> map = new TreeMap<Integer, Map<Integer, Double>>();
 
-		int docId;
-		for (File file : files) {
-			FileDumpObject fdo = null;
-			Map<Integer, Double> termIdToTDIDFMap = new TreeMap<Integer, Double>();
-			try {
-				fdo = fileToFDO(file);
-			} catch (JSONException | IOException e) {
-			}
-
-			if (fdo != null) {
-				docId = fdo.getId();
-				int termFreq;
-				for (int termId : docIdToTermIdsMap.get(docId)) {
-					termFreq = 0;
-					for (int termId2 : docIdToTermIdsMap.get(docId)) {
-						if (termId == termId2) {
-							++termFreq;
-						}
+		int termFreq;
+		Map<Integer, Double> termIdToTDIDFMap;
+		for (int docId = 0; docId < docIdToTermIdsMap.size(); ++docId) {
+			termIdToTDIDFMap = new TreeMap<Integer, Double>();
+			for (int termId : docIdToTermIdsMap.get(docId)) {
+				termFreq = 0;
+				for (int termId2 : docIdToTermIdsMap.get(docId)) {
+					if (termId == termId2) {
+						++termFreq;
 					}
-					termIdToTDIDFMap.put(termId, termFreq * (Math.log(termIdToDocIdsMap.get(termId).size())));
 				}
-				map.put(docId, termIdToTDIDFMap);
+				termIdToTDIDFMap.put(termId, termFreq
+						* (Math.log(termIdToDocIdsMap.get(termId).size())));
 			}
-			fdo = null;
+			map.put(docId, termIdToTDIDFMap);
 		}
 
 		return map;
