@@ -15,7 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class CreateIndex {
-
+	
 	/** returns term to term id map **/
 	public static Map<String, Integer> createTermToTermIdMap(List<File> files) {
 		Map<String, Integer> map = new TreeMap<String, Integer>();
@@ -79,7 +79,7 @@ public class CreateIndex {
 
 		Map<Integer, List<Integer>> map = new TreeMap<Integer, List<Integer>>();
 
-		for (int i = 0; i < mapSize - 1; ++i) {
+		for (int i = 0; i < mapSize; ++i) {
 			map.put(i, new ArrayList<Integer>());
 		}
 

@@ -64,6 +64,7 @@ public class ICSDumpDatabase {
 		System.out.println("Initialized termToTermId table");
 	}
 
+	@SuppressWarnings("unused")
 	private void initTermIdToTermTable() throws SQLException {
 		PreparedStatement statement;
 

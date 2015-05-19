@@ -24,7 +24,7 @@ public class Util {
 	public static List<File> getFilesInPath(String path) {
 		List<File> files = new ArrayList<File>();
 		File folder = new File(path);
-		File[] listOfFiles = folder.listFiles(); 
+		File[] listOfFiles = folder.listFiles();
 
 		for (int i = 0; i < listOfFiles.length; ++i) {
 			if (listOfFiles[i].isFile()) {
