@@ -1,6 +1,9 @@
 package ir.assignments.four.pageRank;
 
+import ir.assignments.four.domain.FileDumpObject;
+
 public class PageRank {
+	public static FileDumpObject file; 
 	
 	public PageRank(){
 		
