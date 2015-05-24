@@ -14,30 +14,42 @@ public class ICSDumpDatabase {
 	private String password;
 	private String databaseName = null;
 	private Connection connection = null;
+	private int batchLoadSize;
 
 	public ICSDumpDatabase(String username, String password, String databaseName) {
 		this.username = username;
 		this.password = password;
 		this.databaseName = databaseName;
+		this.batchLoadSize = 1000;
 	}
 
-	public void create() {
+	public void createDatabase() {
 		try {
 
 			initDb();
 			setConnectionAfterDatabaseCreation();
-			initTermToTermIdTable();
-			//initTermIdToTermTable();
-			initTermIdToTermFrequency();
-			initDocIdToTermIdTable();
-			initTermIdToDocIdTable();
-			initDocIdToUrlTable();
 
 		} catch (SQLException e) {
 			//e.printStackTrace();
 		}
 	}
+	
+	public void createTables(){
+		
+		try {
+			
+			initTermToTermIdTable();
+			initTermIdToTermFrequency();
+			initDocIdToTermIdTable();
+			initTermIdToDocIdTable();
+			initDocIdToUrlTable();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
+	}
 	private void initDb() {
 		try {
 
@@ -64,19 +76,6 @@ public class ICSDumpDatabase {
 		System.out.println("Initialized termToTermId table");
 	}
 
-	@SuppressWarnings("unused")
-	private void initTermIdToTermTable() throws SQLException {
-		PreparedStatement statement;
-
-		String qCreateTblTerms = "CREATE TABLE IF NOT EXISTS icsdump.termidtoterm "
-				+ "(termid INT NOT NULL," + "term VARCHAR(64),"
-				+ "FOREIGN KEY (termid) REFERENCES termtotermid(termid));";
-
-		statement = this.connection.prepareStatement(qCreateTblTerms);
-		statement.executeUpdate();
-		System.out.println("Initialized termIdToTerm table");
-	}
-
 	private void initTermIdToTermFrequency() throws SQLException {
 		PreparedStatement statement;
 
@@ -92,10 +91,10 @@ public class ICSDumpDatabase {
 	private void initDocIdToTermIdTable() throws SQLException {
 		PreparedStatement statement;
 
-		String qCreateTblTerms = "CREATE TABLE IF NOT EXISTS icsdump.docidtotermid "
-				+ "(docid INT NOT NULL," + "termid INT," + "PRIMARY KEY (docid),"
-				+ "FOREIGN KEY (termid) REFERENCES termtotermid(termid));";
-
+		String qCreateTblTerms = "CREATE TABLE IF NOT EXISTS icsdump.docidtotermid"
+				+ "(docid INT NOT NULL," + "termid INT);";
+		
+		//," + "PRIMARY KEY (docid),"+ "FOREIGN KEY (termid) REFERENCES termtotermid(termid)
 		statement = this.connection.prepareStatement(qCreateTblTerms);
 		statement.executeUpdate();
 		System.out.println("Initialized DocIdToTermId table");
@@ -105,9 +104,9 @@ public class ICSDumpDatabase {
 		PreparedStatement statement;
 
 		String qCreateTblTerms = "CREATE TABLE IF NOT EXISTS icsdump.termidtodocid "
-				+ "(termid INT NOT NULL," + "docid INT NOT NULL,"
-				+ "FOREIGN KEY (termid) REFERENCES docidtotermid(termid));";
+				+ "(termid INT NOT NULL," + "docid INT NOT NULL);";
 
+		//"+ "FOREIGN KEY (termid) REFERENCES docidtotermid(termid)
 		statement = this.connection.prepareStatement(qCreateTblTerms);
 		statement.executeUpdate();
 		System.out.println("Initialized TermIdToDocId table");
@@ -128,34 +127,31 @@ public class ICSDumpDatabase {
 	public int insertTermToTermIdTable(Map<String, Integer> map) {
 
 		final String termToTermIdQuery = "INSERT INTO termtotermid" + "(term,termid) VALUES (?,?);";
-		//final String termIdToTermQuery = "INSERT INTO termidtoterm" + "(termid,term) VALUES (?,?);";
-
-		PreparedStatement insert1 = null;
-		//PreparedStatement insert2 = null;
+		PreparedStatement insert = null;
 
 		int result = 0;
 		try {
-
-			insert1 = this.connection.prepareStatement(termToTermIdQuery);
-			//insert2 = this.connection.prepareStatement(termIdToTermQuery);
+			
+			 
+			int currentBatchSize = 0; 
+			insert = this.connection.prepareStatement(termToTermIdQuery);
 
 			for (String m : map.keySet()) {
 
-				insert1.setString(1, m);
-				insert1.setInt(2, map.get(m));
-				insert1.addBatch();
-
-				//insert2.setInt(1, map.get(m));
-				//insert2.setString(2, m);
-				//insert2.addBatch();
+				insert.setString(1, m);
+				insert.setInt(2, map.get(m));
+				insert.addBatch();
+				
+				if (++currentBatchSize % this.batchLoadSize == 0){
+					
+					insert.executeBatch(); 
+					insert.clearBatch();
+				}
 
 			}
 
-			insert1.executeBatch();
-			//insert2.executeBatch();
-
-			insert1.close();
-			//insert2.close();
+			insert.executeBatch();
+			insert.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -175,17 +171,23 @@ public class ICSDumpDatabase {
 		int result = 0;
 
 		try {
-
+			
+			int currentBatchSize = 0;
 			insert = this.connection.prepareStatement(termIdToTermFreqQuery);
 
 			for (Integer m : map.keySet()) {
 				insert.setInt(1, m);
 				insert.setInt(2, map.get(m));
 				insert.addBatch();
+
+				if (++currentBatchSize % this.batchLoadSize == 0){
+					
+					insert.executeBatch(); 
+					insert.clearBatch();
+				}
 			}
 
 			insert.executeBatch();
-
 			insert.close();
 
 		} catch (SQLException e) {
@@ -198,7 +200,7 @@ public class ICSDumpDatabase {
 
 	}
 
-	public int insertDocIdsAndTermIdTables(Map<Integer, List<Integer>> map) {
+	public int insertDocIdsToTermIdTables(Map<Integer, List<Integer>> map) {
 
 		final String DocIdToTermIdQuery = "INSERT INTO docidtotermid"
 				+ "(docid,termid) VALUES (?,?);";
@@ -211,18 +213,30 @@ public class ICSDumpDatabase {
 		try {
 
 			insert = this.connection.prepareStatement(DocIdToTermIdQuery);
-
+			int currentBatchSize = 0;
+			
 			for (Integer docID : map.keySet()) {
+				
 				for (Integer termID : map.get(docID)) {
+					
 					insert.setInt(1, docID);
 					insert.setInt(2, termID);
 					insert.addBatch();
+
+					if (++currentBatchSize % this.batchLoadSize == 0){
+						
+						insert.executeBatch(); 
+						insert.clearBatch();
+					}
+					
+					
 				}
 			}
 
 			insert.executeBatch();
-
 			insert.close();
+			
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -238,20 +252,27 @@ public class ICSDumpDatabase {
 				+ "(termid,docid) VALUES (?,?);";
 
 		PreparedStatement insert = null;
-
 		int result = 0;
 
 		//System.out.println(map); 
 		try {
 
 			insert = this.connection.prepareStatement(TermIdToDocIdQuery);
-
+			int currentBatchSize = 0;
+			
 			for (Integer termID : map.keySet()) {
 				for (Integer docID : map.get(termID)) {
 					insert.setInt(1, termID);
 					insert.setInt(2, docID);
 					insert.addBatch();
+					
+					if (++currentBatchSize % this.batchLoadSize == 0){
+						
+						insert.executeBatch(); 
+						insert.clearBatch();
+					}
 				}
+				
 			}
 
 			insert.executeBatch();
@@ -278,12 +299,19 @@ public class ICSDumpDatabase {
 		try {
 
 			insert = this.connection.prepareStatement(termIdToTermFreqQuery);
+			int currentBatchSize = 0;
 
 			for (Integer m : map.keySet()) {
 
 				insert.setInt(1, m);
 				insert.setString(2, map.get(m));
 				insert.addBatch();
+				
+				if (++currentBatchSize % this.batchLoadSize == 0){
+					
+					insert.executeBatch(); 
+					insert.clearBatch();
+				}
 
 			}
 
@@ -301,16 +329,21 @@ public class ICSDumpDatabase {
 	}
 
 	private Connection getInitialConnection() throws SQLException {
-		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/?user="
-				+ this.username + "&password=" + this.password);
+		String connectionString = "jdbc:mysql://localhost/?user="
+				+ this.username + "&password=" + this.password;
+		//System.out.println(connectionString); 
+		Connection connection = DriverManager.getConnection(connectionString);
 		return connection;
 	}
 
 	public void setConnectionAfterDatabaseCreation() throws SQLException {
-		this.connection = DriverManager.getConnection("jdbc:mysql://localhost/" + this.databaseName
-				+ "?user=" + this.username + "&password=" + this.password);
+		
+		String connectionString = "jdbc:mysql://localhost/" + this.databaseName
+				+ "?user=" + this.username + "&password=" + this.password; 
+		//System.out.println(connectionString); 
+		this.connection = DriverManager.getConnection(connectionString);
+		
 	}
-
 	/** close connection object **/
 	public void close() {
 		try {

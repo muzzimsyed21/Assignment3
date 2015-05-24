@@ -10,7 +10,7 @@ import java.util.Set;
 public class Indexer {
 
 	/** toggle true to recreate index **/
-	private final static boolean CREATEFLAG = true;
+	private final static boolean CREATEFLAG = false;
 
 	/** term to term id map **/
 	private static Map<String, Integer> termToTermIdMap;
@@ -56,6 +56,7 @@ public class Indexer {
 			SaveIndex.saveDocIdToUrlMap(docIdToUrlMap, IndexerLocations.docIdToUrlCSV);
 			SaveIndex.saveDocIdToTermIdToTFIDFMap(docIdToTermIdToTFIDFMap,
 					IndexerLocations.docIdToTermIdToTFIDFCSV);
+			
 		} else {
 			termToTermIdMap = LoadIndex.loadTermToTermIdMap(IndexerLocations.termToTermIdCSV);
 			termIdToTermMap = LoadIndex.loadTermIdToTermMap(termToTermIdMap);
