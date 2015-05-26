@@ -115,13 +115,23 @@ public class ICSDumpDatabase {
 	private void initDocIdToUrlTable() throws SQLException {
 		PreparedStatement statement;
 
-		String qCreateTblTerms = "CREATE TABLE IF NOT EXISTS icsdump.docidtourl "
-				+ "(docid INT NOT NULL," + "url VARCHAR(255));";
+		String qCreateTblTerms = "CREATE TABLE IF NOT EXISTS icsdump.docidtourl (docid INT NOT NULL, url VARCHAR(255));";
 
 		//,"+ "FOREIGN KEY (docid) REFERENCES docidtotermid(docid) <<==== UPDATE CONSTRAINTS
 		statement = this.connection.prepareStatement(qCreateTblTerms);
 		statement.executeUpdate();
 		System.out.println("Initialized DocIdToUrl table");
+	}
+	
+	private void initTDIDFTable() throws SQLException {
+		PreparedStatement statement;
+
+		String qCreateTblTerms = "CREATE TABLE IF NOT EXISTS icsdump.tfidf "
+				+ "(docid INT NOT NULL," + " termid INT NOT NULL, tfidf FLOAT NOT NULL);";
+
+		statement = this.connection.prepareStatement(qCreateTblTerms);
+		statement.executeUpdate();
+		System.out.println("Initialized tfidf table");
 	}
 
 	public int insertTermIdToTermTable(Map<String, Integer> map) {
@@ -162,8 +172,7 @@ public class ICSDumpDatabase {
 
 	public int insertTermIdToTermFrequencyTable(Map<Integer, Integer> map) {
 
-		final String termIdToTermFreqQuery = "INSERT INTO termidtotermfrequency"
-				+ "(termid,termFrequency) VALUES (?,?);";
+		final String termIdToTermFreqQuery = "INSERT INTO termidtotermfrequency (termid, termFrequency) VALUES (?,?)";
 
 		PreparedStatement insert = null;
 		int result = 0;
@@ -178,7 +187,8 @@ public class ICSDumpDatabase {
 				insert.setInt(2, map.get(m));
 				insert.addBatch();
 
-				if (++currentBatchSize % this.batchLoadSize == 0){		
+				if (++currentBatchSize % this.batchLoadSize == 0){
+					System.out.println("adding " + currentBatchSize);
 					insert.executeBatch(); 
 					insert.clearBatch();
 				}
@@ -186,7 +196,6 @@ public class ICSDumpDatabase {
 
 			insert.executeBatch();
 			insert.close();
-			this.connection.commit();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -200,8 +209,7 @@ public class ICSDumpDatabase {
 
 	public int insertDocIdsToTermIdTables(Map<Integer, List<Integer>> map) {
 
-		final String DocIdToTermIdQuery = "INSERT INTO docidtotermid"
-				+ "(docid,termid) VALUES (?,?);";
+		final String DocIdToTermIdQuery = "INSERT INTO docidtotermid (docid, termid) VALUES (?,?)";
 
 		PreparedStatement insert = null;
 
@@ -222,6 +230,7 @@ public class ICSDumpDatabase {
 					insert.addBatch();
 
 					if (++currentBatchSize % this.batchLoadSize == 0){
+						System.out.println("adding " + currentBatchSize);
 						insert.executeBatch(); 
 						insert.clearBatch();
 					}
@@ -244,8 +253,7 @@ public class ICSDumpDatabase {
 
 	public int insertTermIdToDocIdTables(Map<Integer, Set<Integer>> map) {
 
-		final String TermIdToDocIdQuery = "INSERT INTO termidtodocid"
-				+ "(termid,docid) VALUES (?,?);";
+		final String TermIdToDocIdQuery = "INSERT INTO termidtodocid (termid, docid) VALUES (?,?)";
 
 		PreparedStatement insert = null;
 		int result = 0;
@@ -263,6 +271,7 @@ public class ICSDumpDatabase {
 					insert.addBatch();
 					
 					if (++currentBatchSize % this.batchLoadSize == 0){
+						System.out.println("adding " + currentBatchSize);
 						insert.executeBatch(); 
 						insert.clearBatch();
 					}
@@ -284,13 +293,11 @@ public class ICSDumpDatabase {
 	}
 
 	public int insertDocIDToUrlTable(Map<Integer, String> map) {
-
-		final String termIdToTermFreqQuery = "INSERT INTO docidtourl" + "(docid,url) VALUES (?,?);";
+		final String termIdToTermFreqQuery = "INSERT INTO docidtourl (docid, url) VALUES (?,?)";
 
 		PreparedStatement insert = null;
 		int result = 0;
 
-		System.out.println(map);
 		try {
 
 			insert = this.connection.prepareStatement(termIdToTermFreqQuery);
@@ -303,6 +310,7 @@ public class ICSDumpDatabase {
 				insert.addBatch();
 				
 				if (++currentBatchSize % this.batchLoadSize == 0){
+					System.out.println("adding " + currentBatchSize);
 					insert.executeBatch(); 
 					insert.clearBatch();
 				}
@@ -310,7 +318,6 @@ public class ICSDumpDatabase {
 			}
 
 			insert.executeBatch();
-
 			insert.close();
 
 		} catch (SQLException e) {

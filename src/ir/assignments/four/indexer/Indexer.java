@@ -49,25 +49,26 @@ public class Indexer {
 					termIdToDocIdsMap, termIdToTermFrequencyMap);
 
 			// save maps to .csv
-			SaveIndex.saveTermToTermIdMap(termIdToTermMap, IndexerLocations.termToTermIdCSV);
+			SaveIndex.saveTermToTermIdMap(termIdToTermMap, IndexerLocations.termToTermIdCSV+"demo");
 			SaveIndex.saveTermIdToTermFrequencyMap(termIdToTermFrequencyMap,
-					IndexerLocations.termIdToTermFrequencyCSV);
-			SaveIndex.saveDocIdToTermIdsMap(docIdToTermIdsMap, IndexerLocations.docIdToTermIdCSV);
-			SaveIndex.saveDocIdToUrlMap(docIdToUrlMap, IndexerLocations.docIdToUrlCSV);
+					IndexerLocations.termIdToTermFrequencyCSV+"demo");
+			SaveIndex.saveDocIdToTermIdsMap(docIdToTermIdsMap, IndexerLocations.docIdToTermIdCSV+"demo");
+			SaveIndex.saveDocIdToUrlMap(docIdToUrlMap, IndexerLocations.docIdToUrlCSV+"demo");
 			SaveIndex.saveDocIdToTermIdToTFIDFMap(docIdToTermIdToTFIDFMap,
-					IndexerLocations.docIdToTermIdToTFIDFCSV);
+					IndexerLocations.docIdToTermIdToTFIDFCSV+"demo");
 			
 		} else {
-			termToTermIdMap = LoadIndex.loadTermToTermIdMap(IndexerLocations.termToTermIdCSV);
 			/*
+			termToTermIdMap = LoadIndex.loadTermToTermIdMap(IndexerLocations.termToTermIdCSV);
 			termIdToTermMap = LoadIndex.loadTermIdToTermMap(termToTermIdMap);
 			termIdToTermFrequencyMap = LoadIndex.loadTermIdToTermFrequencyMap(IndexerLocations.termIdToTermFrequencyCSV);
 			docIdToTermIdsMap = LoadIndex.loadDocIdToTermIdsMap(IndexerLocations.docIdToTermIdCSV);
 			termIdToDocIdsMap = LoadIndex.loadTermIdToDocIdMap(docIdToTermIdsMap,
 					termToTermIdMap.size());
-			docIdToUrlMap = LoadIndex.loadDocIdToUrlMap(IndexerLocations.docIdToUrlCSV);
-			docIdToTermIdToTFIDFMap = LoadIndex.loadDocIdToTermIdToTFIDFMap(IndexerLocations.docIdToTermIdToTFIDFCSV);
 			*/
+			docIdToUrlMap = LoadIndex.loadDocIdToUrlMap(IndexerLocations.docIdToUrlCSV);
+			//docIdToTermIdToTFIDFMap = LoadIndex.loadDocIdToTermIdToTFIDFMap(IndexerLocations.docIdToTermIdToTFIDFCSV);
+			
 		}
 	}
 
@@ -84,7 +85,6 @@ public class Indexer {
 		System.out.println(termIdToDocIdsMap.size());
 		System.out.println(docIdToUrlMap.size());
 		System.out.println(docIdToTermIdToTFIDFMap.size());
-		*/
 		for (String key : termToTermIdMap.keySet()) {
 			System.out.println(key + ": " + termToTermIdMap.get(key));
 		}
