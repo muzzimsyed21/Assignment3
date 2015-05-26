@@ -10,7 +10,7 @@ import java.util.Set;
 public class Indexer {
 
 	/** toggle true to recreate index **/
-	private final static boolean CREATEFLAG = true;
+	private final static boolean CREATEFLAG = false;
 
 	/** term to term id map **/
 	private static Map<String, Integer> termToTermIdMap;
@@ -69,7 +69,8 @@ public class Indexer {
 	}
 
 	public static void main(String[] args) {
-
+		long startTime = System.nanoTime();
+		
 		init();
 
 		System.out.println(termToTermIdMap.size());
@@ -92,6 +93,9 @@ public class Indexer {
 		*/
 
 		System.out.println("DONE");
+		long endTime = System.nanoTime();
+		long duration = (endTime - startTime);  //divide by 1000000 to get milliseconds.
+		System.out.println(duration / 1000000);
 	}
 
 	/** return term frequency of term in doc **/
