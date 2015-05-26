@@ -1,4 +1,5 @@
 FileDump
 *.csv
 *.class
+bin
 testFiles
