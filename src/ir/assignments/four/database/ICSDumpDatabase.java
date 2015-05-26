@@ -14,30 +14,65 @@ public class ICSDumpDatabase {
 	private String password;
 	private String databaseName = null;
 	private Connection connection = null;
+<<<<<<< .merge_file_a00188
+=======
+	private int batchLoadSize;
+>>>>>>> .merge_file_a05492
 
 	public ICSDumpDatabase(String username, String password, String databaseName) {
 		this.username = username;
 		this.password = password;
 		this.databaseName = databaseName;
+<<<<<<< .merge_file_a00188
 	}
 
 	public void create() {
+=======
+		this.batchLoadSize = 1000;
+	}
+
+	public void createDatabase() {
+>>>>>>> .merge_file_a05492
 		try {
 
 			initDb();
 			setConnectionAfterDatabaseCreation();
+<<<<<<< .merge_file_a00188
 			initTermToTermIdTable();
 			//initTermIdToTermTable();
+=======
+
+		} catch (SQLException e) {
+			//e.printStackTrace();
+		}
+	}
+	
+	public void createTables(){
+		
+		try {
+			
+			initTermToTermIdTable();
+>>>>>>> .merge_file_a05492
 			initTermIdToTermFrequency();
 			initDocIdToTermIdTable();
 			initTermIdToDocIdTable();
 			initDocIdToUrlTable();
+<<<<<<< .merge_file_a00188
 
 		} catch (SQLException e) {
 			//e.printStackTrace();
 		}
 	}
 
+=======
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+>>>>>>> .merge_file_a05492
 	private void initDb() {
 		try {
 
@@ -64,6 +99,7 @@ public class ICSDumpDatabase {
 		System.out.println("Initialized termToTermId table");
 	}
 
+<<<<<<< .merge_file_a00188
 	@SuppressWarnings("unused")
 	private void initTermIdToTermTable() throws SQLException {
 		PreparedStatement statement;
@@ -77,6 +113,8 @@ public class ICSDumpDatabase {
 		System.out.println("Initialized termIdToTerm table");
 	}
 
+=======
+>>>>>>> .merge_file_a05492
 	private void initTermIdToTermFrequency() throws SQLException {
 		PreparedStatement statement;
 
@@ -92,10 +130,17 @@ public class ICSDumpDatabase {
 	private void initDocIdToTermIdTable() throws SQLException {
 		PreparedStatement statement;
 
+<<<<<<< .merge_file_a00188
 		String qCreateTblTerms = "CREATE TABLE IF NOT EXISTS icsdump.docidtotermid "
 				+ "(docid INT NOT NULL," + "termid INT," + "PRIMARY KEY (docid),"
 				+ "FOREIGN KEY (termid) REFERENCES termtotermid(termid));";
 
+=======
+		String qCreateTblTerms = "CREATE TABLE IF NOT EXISTS icsdump.docidtotermid"
+				+ "(docid INT NOT NULL," + "termid INT);";
+		
+		//," + "PRIMARY KEY (docid),"+ "FOREIGN KEY (termid) REFERENCES termtotermid(termid)
+>>>>>>> .merge_file_a05492
 		statement = this.connection.prepareStatement(qCreateTblTerms);
 		statement.executeUpdate();
 		System.out.println("Initialized DocIdToTermId table");
@@ -105,9 +150,15 @@ public class ICSDumpDatabase {
 		PreparedStatement statement;
 
 		String qCreateTblTerms = "CREATE TABLE IF NOT EXISTS icsdump.termidtodocid "
+<<<<<<< .merge_file_a00188
 				+ "(termid INT NOT NULL," + "docid INT NOT NULL,"
 				+ "FOREIGN KEY (termid) REFERENCES docidtotermid(termid));";
 
+=======
+				+ "(termid INT NOT NULL," + "docid INT NOT NULL);";
+
+		//"+ "FOREIGN KEY (termid) REFERENCES docidtotermid(termid)
+>>>>>>> .merge_file_a05492
 		statement = this.connection.prepareStatement(qCreateTblTerms);
 		statement.executeUpdate();
 		System.out.println("Initialized TermIdToDocId table");
@@ -128,6 +179,7 @@ public class ICSDumpDatabase {
 	public int insertTermToTermIdTable(Map<String, Integer> map) {
 
 		final String termToTermIdQuery = "INSERT INTO termtotermid" + "(term,termid) VALUES (?,?);";
+<<<<<<< .merge_file_a00188
 		//final String termIdToTermQuery = "INSERT INTO termidtoterm" + "(termid,term) VALUES (?,?);";
 
 		PreparedStatement insert1 = null;
@@ -156,6 +208,33 @@ public class ICSDumpDatabase {
 
 			insert1.close();
 			//insert2.close();
+=======
+		PreparedStatement insert = null;
+
+		int result = 0;
+		try {
+			
+			 
+			int currentBatchSize = 0; 
+			insert = this.connection.prepareStatement(termToTermIdQuery);
+
+			for (String m : map.keySet()) {
+
+				insert.setString(1, m);
+				insert.setInt(2, map.get(m));
+				insert.addBatch();
+				
+				if (++currentBatchSize % this.batchLoadSize == 0){
+					
+					insert.executeBatch(); 
+					insert.clearBatch();
+				}
+
+			}
+
+			insert.executeBatch();
+			insert.close();
+>>>>>>> .merge_file_a05492
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -175,17 +254,34 @@ public class ICSDumpDatabase {
 		int result = 0;
 
 		try {
+<<<<<<< .merge_file_a00188
 
+=======
+			
+			int currentBatchSize = 0;
+>>>>>>> .merge_file_a05492
 			insert = this.connection.prepareStatement(termIdToTermFreqQuery);
 
 			for (Integer m : map.keySet()) {
 				insert.setInt(1, m);
 				insert.setInt(2, map.get(m));
 				insert.addBatch();
+<<<<<<< .merge_file_a00188
 			}
 
 			insert.executeBatch();
 
+=======
+
+				if (++currentBatchSize % this.batchLoadSize == 0){
+					
+					insert.executeBatch(); 
+					insert.clearBatch();
+				}
+			}
+
+			insert.executeBatch();
+>>>>>>> .merge_file_a05492
 			insert.close();
 
 		} catch (SQLException e) {
@@ -198,7 +294,11 @@ public class ICSDumpDatabase {
 
 	}
 
+<<<<<<< .merge_file_a00188
 	public int insertDocIdsAndTermIdTables(Map<Integer, List<Integer>> map) {
+=======
+	public int insertDocIdsToTermIdTables(Map<Integer, List<Integer>> map) {
+>>>>>>> .merge_file_a05492
 
 		final String DocIdToTermIdQuery = "INSERT INTO docidtotermid"
 				+ "(docid,termid) VALUES (?,?);";
@@ -211,18 +311,44 @@ public class ICSDumpDatabase {
 		try {
 
 			insert = this.connection.prepareStatement(DocIdToTermIdQuery);
+<<<<<<< .merge_file_a00188
 
 			for (Integer docID : map.keySet()) {
 				for (Integer termID : map.get(docID)) {
 					insert.setInt(1, docID);
 					insert.setInt(2, termID);
 					insert.addBatch();
+=======
+			int currentBatchSize = 0;
+			
+			for (Integer docID : map.keySet()) {
+				
+				for (Integer termID : map.get(docID)) {
+					
+					insert.setInt(1, docID);
+					insert.setInt(2, termID);
+					insert.addBatch();
+
+					if (++currentBatchSize % this.batchLoadSize == 0){
+						
+						insert.executeBatch(); 
+						insert.clearBatch();
+					}
+					
+					
+>>>>>>> .merge_file_a05492
 				}
 			}
 
 			insert.executeBatch();
+<<<<<<< .merge_file_a00188
 
 			insert.close();
+=======
+			insert.close();
+			
+			
+>>>>>>> .merge_file_a05492
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -238,20 +364,39 @@ public class ICSDumpDatabase {
 				+ "(termid,docid) VALUES (?,?);";
 
 		PreparedStatement insert = null;
+<<<<<<< .merge_file_a00188
 
+=======
+>>>>>>> .merge_file_a05492
 		int result = 0;
 
 		//System.out.println(map); 
 		try {
 
 			insert = this.connection.prepareStatement(TermIdToDocIdQuery);
+<<<<<<< .merge_file_a00188
 
+=======
+			int currentBatchSize = 0;
+			
+>>>>>>> .merge_file_a05492
 			for (Integer termID : map.keySet()) {
 				for (Integer docID : map.get(termID)) {
 					insert.setInt(1, termID);
 					insert.setInt(2, docID);
 					insert.addBatch();
+<<<<<<< .merge_file_a00188
 				}
+=======
+					
+					if (++currentBatchSize % this.batchLoadSize == 0){
+						
+						insert.executeBatch(); 
+						insert.clearBatch();
+					}
+				}
+				
+>>>>>>> .merge_file_a05492
 			}
 
 			insert.executeBatch();
@@ -278,12 +423,25 @@ public class ICSDumpDatabase {
 		try {
 
 			insert = this.connection.prepareStatement(termIdToTermFreqQuery);
+<<<<<<< .merge_file_a00188
+=======
+			int currentBatchSize = 0;
+>>>>>>> .merge_file_a05492
 
 			for (Integer m : map.keySet()) {
 
 				insert.setInt(1, m);
 				insert.setString(2, map.get(m));
 				insert.addBatch();
+<<<<<<< .merge_file_a00188
+=======
+				
+				if (++currentBatchSize % this.batchLoadSize == 0){
+					
+					insert.executeBatch(); 
+					insert.clearBatch();
+				}
+>>>>>>> .merge_file_a05492
 
 			}
 
@@ -301,16 +459,33 @@ public class ICSDumpDatabase {
 	}
 
 	private Connection getInitialConnection() throws SQLException {
+<<<<<<< .merge_file_a00188
 		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/?user="
 				+ this.username + "&password=" + this.password);
+=======
+		String connectionString = "jdbc:mysql://localhost/?user="
+				+ this.username + "&password=" + this.password;
+		//System.out.println(connectionString); 
+		Connection connection = DriverManager.getConnection(connectionString);
+>>>>>>> .merge_file_a05492
 		return connection;
 	}
 
 	public void setConnectionAfterDatabaseCreation() throws SQLException {
+<<<<<<< .merge_file_a00188
 		this.connection = DriverManager.getConnection("jdbc:mysql://localhost/" + this.databaseName
 				+ "?user=" + this.username + "&password=" + this.password);
 	}
 
+=======
+		
+		String connectionString = "jdbc:mysql://localhost/" + this.databaseName
+				+ "?user=" + this.username + "&password=" + this.password; 
+		//System.out.println(connectionString); 
+		this.connection = DriverManager.getConnection(connectionString);
+		
+	}
+>>>>>>> .merge_file_a05492
 	/** close connection object **/
 	public void close() {
 		try {

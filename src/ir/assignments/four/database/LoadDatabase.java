@@ -13,22 +13,24 @@ public class LoadDatabase {
 
 		// construct and initiate database
 		ICSDumpDatabase termDatabase = new ICSDumpDatabase("root", "Password1", "ICSDump");
-		termDatabase.create(); //database name => "ICSDump" call this only once!
-
+		termDatabase.createDatabase(); //COMMENT THIS OUT AFTER FIRST RUN
+		termDatabase.createTables(); //COMMENT THIS OUT AFTER FIRST RUN
+		
+		//termDatabase.setConnectionAfterDatabaseCreation(); //UNCOMMENT THIS AFTER FIRST RUN
 		// store TermToTermId
-		termDatabase.insertTermToTermIdTable(Indexer.getTermToTermIdMap());
+		//termDatabase.insertTermToTermIdTable(Indexer.getTermToTermIdMap());
 
 		// store TermIdToTermFreq
-		termDatabase.insertTermIdToTermFrequencyTable(Indexer.getTermIdToTermFrequencyMap());
+		//termDatabase.insertTermIdToTermFrequencyTable(Indexer.getTermIdToTermFrequencyMap());
 
 		// store DocIdToTermId and 
-		termDatabase.insertDocIdsAndTermIdTables(Indexer.getDocIdToTermIdsMap());
+		//termDatabase.insertDocIdsToTermIdTables(Indexer.getDocIdToTermIdsMap());
 
 		// store TermIdToDocId
-		termDatabase.insertTermIdToDocIdTables(Indexer.getTermIdToDocIdMap());
+		//termDatabase.insertTermIdToDocIdTables(Indexer.getTermIdToDocIdMap());
 		
 		// store DocIdToUrl 
-		termDatabase.insertDocIDToUrlTable(Indexer.getDocIdToUrlMap()); //NEEDS CONSTRAINTS UPDATED
+		//termDatabase.insertDocIDToUrlTable(Indexer.getDocIdToUrlMap()); //NEEDS CONSTRAINTS UPDATED
 
 		//close connection 
 		termDatabase.close();

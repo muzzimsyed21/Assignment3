@@ -4,7 +4,7 @@ public class IndexerLocations {
 	
 	/** file dump path **/
 	//public static final String fileDump = "testFiles/";
-	public static final String fileDump = "FileDump/";
+	public static final String fileDump = "C:/Users/muzzimsyed21/Desktop/FileDump2";
 	
 	/** csv path **/
 	public static final String csvPath = "csv/";

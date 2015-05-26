@@ -56,6 +56,7 @@ public class Indexer {
 			SaveIndex.saveDocIdToUrlMap(docIdToUrlMap, IndexerLocations.docIdToUrlCSV);
 			SaveIndex.saveDocIdToTermIdToTFIDFMap(docIdToTermIdToTFIDFMap,
 					IndexerLocations.docIdToTermIdToTFIDFCSV);
+			
 		} else {
 			termToTermIdMap = LoadIndex.loadTermToTermIdMap(IndexerLocations.termToTermIdCSV);
 			termIdToTermMap = LoadIndex.loadTermIdToTermMap(termToTermIdMap);
