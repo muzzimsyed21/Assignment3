@@ -8,17 +8,19 @@ public class LoadDatabase {
 
 	public static void main(String[] args) throws SQLException {
 
-		// initialize indexer maps
-		Indexer.init();
+		
 
 		// construct and initiate database
 		ICSDumpDatabase termDatabase = new ICSDumpDatabase("root", "Password1", "ICSDump");
-		termDatabase.createDatabase(); //COMMENT THIS OUT AFTER FIRST RUN
-		termDatabase.createTables(); //COMMENT THIS OUT AFTER FIRST RUN
+		//termDatabase.createDatabase(); //COMMENT THIS OUT AFTER FIRST RUN
+		//termDatabase.createTables(); //COMMENT THIS OUT AFTER FIRST RUN
 		
-		//termDatabase.setConnectionAfterDatabaseCreation(); //UNCOMMENT THIS AFTER FIRST RUN
+		// initialize indexer maps
+		Indexer.init(); //UNCOMMENT THIS AFTER FIRST RUN
+		
+		termDatabase.setConnectionAfterDatabaseCreation(); //UNCOMMENT THIS AFTER FIRST RUN
 		// store TermToTermId
-		//termDatabase.insertTermToTermIdTable(Indexer.getTermToTermIdMap());
+		termDatabase.insertTermIdToTermTable(Indexer.getTermToTermIdMap());
 
 		// store TermIdToTermFreq
 		//termDatabase.insertTermIdToTermFrequencyTable(Indexer.getTermIdToTermFrequencyMap());

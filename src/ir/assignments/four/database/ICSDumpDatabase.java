@@ -38,7 +38,7 @@ public class ICSDumpDatabase {
 		
 		try {
 			
-			initTermToTermIdTable();
+			initTermIdToTermTable();
 			initTermIdToTermFrequency();
 			initDocIdToTermIdTable();
 			initTermIdToDocIdTable();
@@ -65,15 +65,15 @@ public class ICSDumpDatabase {
 		}
 	}
 
-	private void initTermToTermIdTable() throws SQLException {
+	private void initTermIdToTermTable() throws SQLException {
 		PreparedStatement statement;
 
-		String qCreateTblTerms = "CREATE TABLE IF NOT EXISTS icsdump.termtotermid "
+		String qCreateTblTerms = "CREATE TABLE IF NOT EXISTS icsdump.termidtoterm "
 				+ "(termid INT NOT NULL," + "term VARCHAR(64)," + "PRIMARY KEY (termid));";
 
 		statement = this.connection.prepareStatement(qCreateTblTerms);
 		statement.executeUpdate();
-		System.out.println("Initialized termToTermId table");
+		System.out.println("Initialized termIdToTerm table");
 	}
 
 	private void initTermIdToTermFrequency() throws SQLException {
@@ -81,7 +81,7 @@ public class ICSDumpDatabase {
 
 		String qCreateTblTerms = "CREATE TABLE IF NOT EXISTS icsdump.termidtotermfrequency "
 				+ "(termid INT NOT NULL," + "termFrequency INT NOT NULL,"
-				+ "FOREIGN KEY (termid) REFERENCES termtotermid(termid));";
+				+ "FOREIGN KEY (termid) REFERENCES termidtoterm(termid));";
 
 		statement = this.connection.prepareStatement(qCreateTblTerms);
 		statement.executeUpdate();
@@ -124,26 +124,24 @@ public class ICSDumpDatabase {
 		System.out.println("Initialized DocIdToUrl table");
 	}
 
-	public int insertTermToTermIdTable(Map<String, Integer> map) {
+	public int insertTermIdToTermTable(Map<String, Integer> map) {
 
-		final String termToTermIdQuery = "INSERT INTO termtotermid" + "(term,termid) VALUES (?,?);";
+		final String termIdToTermQuery = "INSERT INTO termidtoterm (termid, term) VALUES(?,?)";
 		PreparedStatement insert = null;
 
 		int result = 0;
 		try {
-			
 			 
 			int currentBatchSize = 0; 
-			insert = this.connection.prepareStatement(termToTermIdQuery);
+			insert = this.connection.prepareStatement(termIdToTermQuery);
 
 			for (String m : map.keySet()) {
-
-				insert.setString(1, m);
-				insert.setInt(2, map.get(m));
+				insert.setInt(1, map.get(m));
+				insert.setString(2, m);
 				insert.addBatch();
 				
 				if (++currentBatchSize % this.batchLoadSize == 0){
-					
+					System.out.println("adding " + currentBatchSize);
 					insert.executeBatch(); 
 					insert.clearBatch();
 				}
@@ -157,7 +155,7 @@ public class ICSDumpDatabase {
 			e.printStackTrace();
 		}
 
-		System.out.println("TermToTermId Table Stored");
+		System.out.println("TermIdToTerm Table Stored");
 
 		return result;
 	}
@@ -180,8 +178,7 @@ public class ICSDumpDatabase {
 				insert.setInt(2, map.get(m));
 				insert.addBatch();
 
-				if (++currentBatchSize % this.batchLoadSize == 0){
-					
+				if (++currentBatchSize % this.batchLoadSize == 0){		
 					insert.executeBatch(); 
 					insert.clearBatch();
 				}
@@ -189,6 +186,7 @@ public class ICSDumpDatabase {
 
 			insert.executeBatch();
 			insert.close();
+			this.connection.commit();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -224,11 +222,9 @@ public class ICSDumpDatabase {
 					insert.addBatch();
 
 					if (++currentBatchSize % this.batchLoadSize == 0){
-						
 						insert.executeBatch(); 
 						insert.clearBatch();
 					}
-					
 					
 				}
 			}
@@ -267,7 +263,6 @@ public class ICSDumpDatabase {
 					insert.addBatch();
 					
 					if (++currentBatchSize % this.batchLoadSize == 0){
-						
 						insert.executeBatch(); 
 						insert.clearBatch();
 					}
@@ -308,7 +303,6 @@ public class ICSDumpDatabase {
 				insert.addBatch();
 				
 				if (++currentBatchSize % this.batchLoadSize == 0){
-					
 					insert.executeBatch(); 
 					insert.clearBatch();
 				}
@@ -339,7 +333,7 @@ public class ICSDumpDatabase {
 	public void setConnectionAfterDatabaseCreation() throws SQLException {
 		
 		String connectionString = "jdbc:mysql://localhost/" + this.databaseName
-				+ "?user=" + this.username + "&password=" + this.password; 
+				+ "?user=" + this.username + "&password=" + this.password + "&rewriteBatchedStatements=true"; 
 		//System.out.println(connectionString); 
 		this.connection = DriverManager.getConnection(connectionString);
 		
