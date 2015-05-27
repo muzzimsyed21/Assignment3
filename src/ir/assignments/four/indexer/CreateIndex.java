@@ -12,7 +12,6 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 public class CreateIndex {
 	
@@ -24,7 +23,7 @@ public class CreateIndex {
 		for (File file : files) {
 			FileDumpObject fdo = null;
 			try {
-				fdo = fileToFDO(file);
+				fdo = Util.fileToFDO(file);
 			} catch (JSONException | IOException e) {
 			}
 
@@ -56,7 +55,7 @@ public class CreateIndex {
 		for (File file : files) {
 			FileDumpObject fdo = null;
 			try {
-				fdo = fileToFDO(file);
+				fdo = Util.fileToFDO(file);
 			} catch (JSONException | IOException e) {
 			}
 
@@ -86,7 +85,7 @@ public class CreateIndex {
 		for (File file : files) {
 			FileDumpObject fdo = null;
 			try {
-				fdo = fileToFDO(file);
+				fdo = Util.fileToFDO(file);
 			} catch (JSONException | IOException e) {
 			}
 
@@ -108,7 +107,7 @@ public class CreateIndex {
 		for (File file : files) {
 			FileDumpObject fdo = null;
 			try {
-				fdo = fileToFDO(file);
+				fdo = Util.fileToFDO(file);
 			} catch (JSONException | IOException e) {
 			}
 
@@ -148,17 +147,12 @@ public class CreateIndex {
 		return map;
 	}
 
-	/** convert File to FileDumpObject **/
-	public static FileDumpObject fileToFDO(File file) throws JSONException, IOException {
-		return new FileDumpObject(new JSONObject(Util.readFile(file)));
-	}
-
 	/** TEMPLATE! **/
 	/*
 	for (File file : files) {
 		FileDumpObject fdo = null;
 		try {
-			fdo = fileToFDO(file);
+			fdo = Util.fileToFDO(file);
 		} catch (JSONException | IOException e) {
 		}
 		

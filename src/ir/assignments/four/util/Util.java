@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Util {
 
 	private static final String STOPWORDSPATH = "Stopwords.txt";
@@ -111,6 +114,11 @@ public class Util {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	/** convert File to FileDumpObject **/
+	public static FileDumpObject fileToFDO(File file) throws JSONException, IOException {
+		return new FileDumpObject(new JSONObject(Util.readFile(file)));
 	}
 
 	/**
