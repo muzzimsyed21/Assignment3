@@ -58,16 +58,17 @@ public class Indexer {
 					IndexerLocations.docIdToTermIdToTFIDFCSV);
 			
 		} else {
-			termToTermIdMap = LoadIndex.loadTermToTermIdMap(IndexerLocations.termToTermIdCSV);
 			/*
+			termToTermIdMap = LoadIndex.loadTermToTermIdMap(IndexerLocations.termToTermIdCSV);
 			termIdToTermMap = LoadIndex.loadTermIdToTermMap(termToTermIdMap);
 			termIdToTermFrequencyMap = LoadIndex.loadTermIdToTermFrequencyMap(IndexerLocations.termIdToTermFrequencyCSV);
 			docIdToTermIdsMap = LoadIndex.loadDocIdToTermIdsMap(IndexerLocations.docIdToTermIdCSV);
 			termIdToDocIdsMap = LoadIndex.loadTermIdToDocIdMap(docIdToTermIdsMap,
 					termToTermIdMap.size());
 			docIdToUrlMap = LoadIndex.loadDocIdToUrlMap(IndexerLocations.docIdToUrlCSV);
-			docIdToTermIdToTFIDFMap = LoadIndex.loadDocIdToTermIdToTFIDFMap(IndexerLocations.docIdToTermIdToTFIDFCSV);
 			*/
+			//docIdToTermIdToTFIDFMap = LoadIndex.loadDocIdToTermIdToTFIDFMap(IndexerLocations.docIdToTermIdToTFIDFCSV);
+			
 		}
 	}
 
@@ -84,7 +85,6 @@ public class Indexer {
 		System.out.println(termIdToDocIdsMap.size());
 		System.out.println(docIdToUrlMap.size());
 		System.out.println(docIdToTermIdToTFIDFMap.size());
-		*/
 		for (String key : termToTermIdMap.keySet()) {
 			System.out.println(key + ": " + termToTermIdMap.get(key));
 		}

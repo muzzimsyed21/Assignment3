@@ -7,9 +7,7 @@ import ir.assignments.four.indexer.Indexer;
 public class LoadDatabase {
 
 	public static void main(String[] args) throws SQLException {
-
 		
-
 		// construct and initiate database
 		ICSDumpDatabase termDatabase = new ICSDumpDatabase("root", "Password1", "ICSDump");
 		//termDatabase.createDatabase(); //COMMENT THIS OUT AFTER FIRST RUN
@@ -20,7 +18,7 @@ public class LoadDatabase {
 		
 		termDatabase.setConnectionAfterDatabaseCreation(); //UNCOMMENT THIS AFTER FIRST RUN
 		// store TermToTermId
-		termDatabase.insertTermIdToTermTable(Indexer.getTermToTermIdMap());
+		//termDatabase.insertTermIdToTermTable(Indexer.getTermToTermIdMap());
 
 		// store TermIdToTermFreq
 		//termDatabase.insertTermIdToTermFrequencyTable(Indexer.getTermIdToTermFrequencyMap());
