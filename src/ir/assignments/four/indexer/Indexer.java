@@ -49,13 +49,13 @@ public class Indexer {
 					termIdToDocIdsMap, termIdToTermFrequencyMap);
 
 			// save maps to .csv
-			SaveIndex.saveTermToTermIdMap(termIdToTermMap, IndexerLocations.termToTermIdCSV+"demo");
+			SaveIndex.saveTermToTermIdMap(termIdToTermMap, IndexerLocations.termToTermIdCSV);
 			SaveIndex.saveTermIdToTermFrequencyMap(termIdToTermFrequencyMap,
-					IndexerLocations.termIdToTermFrequencyCSV+"demo");
-			SaveIndex.saveDocIdToTermIdsMap(docIdToTermIdsMap, IndexerLocations.docIdToTermIdCSV+"demo");
-			SaveIndex.saveDocIdToUrlMap(docIdToUrlMap, IndexerLocations.docIdToUrlCSV+"demo");
+					IndexerLocations.termIdToTermFrequencyCSV);
+			SaveIndex.saveDocIdToTermIdsMap(docIdToTermIdsMap, IndexerLocations.docIdToTermIdCSV);
+			SaveIndex.saveDocIdToUrlMap(docIdToUrlMap, IndexerLocations.docIdToUrlCSV);
 			SaveIndex.saveDocIdToTermIdToTFIDFMap(docIdToTermIdToTFIDFMap,
-					IndexerLocations.docIdToTermIdToTFIDFCSV+"demo");
+					IndexerLocations.docIdToTermIdToTFIDFCSV);
 			
 		} else {
 			/*
@@ -65,8 +65,8 @@ public class Indexer {
 			docIdToTermIdsMap = LoadIndex.loadDocIdToTermIdsMap(IndexerLocations.docIdToTermIdCSV);
 			termIdToDocIdsMap = LoadIndex.loadTermIdToDocIdMap(docIdToTermIdsMap,
 					termToTermIdMap.size());
-			*/
 			docIdToUrlMap = LoadIndex.loadDocIdToUrlMap(IndexerLocations.docIdToUrlCSV);
+			*/
 			//docIdToTermIdToTFIDFMap = LoadIndex.loadDocIdToTermIdToTFIDFMap(IndexerLocations.docIdToTermIdToTFIDFCSV);
 			
 		}
