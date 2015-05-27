@@ -29,6 +29,9 @@ public class Indexer {
 
 	/** doc id to url map **/
 	private static Map<Integer, String> docIdToUrlMap;
+	
+	/** url to doc id map **/
+	private static Map<String, Integer> urltoDocIdMap;
 
 	/** doc id to term id to TFIDF map **/
 	private static Map<Integer, Map<Integer, Double>> docIdToTermIdToTFIDFMap;
@@ -45,6 +48,7 @@ public class Indexer {
 			termIdToDocIdsMap = LoadIndex.loadTermIdToDocIdMap(docIdToTermIdsMap,
 					termToTermIdMap.size());
 			docIdToUrlMap = CreateIndex.createDocIdToURLMap(files);
+			urltoDocIdMap = LoadIndex.loadUrlToDocIdMap(docIdToUrlMap);
 			docIdToTermIdToTFIDFMap = CreateIndex.createDocIdToTermIdToTFIDFMap(docIdToTermIdsMap,
 					termIdToDocIdsMap, termIdToTermFrequencyMap);
 
@@ -66,6 +70,7 @@ public class Indexer {
 			termIdToDocIdsMap = LoadIndex.loadTermIdToDocIdMap(docIdToTermIdsMap,
 					termToTermIdMap.size());
 			docIdToUrlMap = LoadIndex.loadDocIdToUrlMap(IndexerLocations.docIdToUrlCSV);
+			urltoDocIdMap = LoadIndex.loadUrlToDocIdMap(docIdToUrlMap);
 			*/
 			//docIdToTermIdToTFIDFMap = LoadIndex.loadDocIdToTermIdToTFIDFMap(IndexerLocations.docIdToTermIdToTFIDFCSV);
 			

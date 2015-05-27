@@ -2,6 +2,7 @@ package ir.assignments.four.pageRank;
 
 import ir.assignments.four.domain.FileDumpObject;
 import ir.assignments.four.indexer.IndexerLocations;
+import ir.assignments.four.indexer.LoadIndex;
 import ir.assignments.four.util.Util;
 
 import java.io.File;
@@ -20,12 +21,12 @@ public class PageRank {
 	
 	public static void init() {
 		List<File> files = Util.getFilesInPath(IndexerLocations.fileDump);
+		Map<Integer, String> docIdToUrlMap = LoadIndex.loadDocIdToUrlMap(IndexerLocations.docIdToUrlCSV);
+		Map<String, Integer> urlToDocIdMap = LoadIndex.loadUrlToDocIdMap(docIdToUrlMap);
 		
 		outNodes = new TreeMap<Integer, Set<Integer>>();
 		inNodes = new TreeMap<Integer, Set<Integer>>();
-		
-		int count = 0;
-		
+				
 		for (File file : files) {
 			FileDumpObject fdo = null;
 			try {

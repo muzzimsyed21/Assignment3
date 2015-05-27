@@ -132,8 +132,19 @@ public class LoadIndex {
 
 		return map;
 	}
+	
+	/** load url to doc id from map **/
+	public static Map<String, Integer> loadUrlToDocIdMap(Map<Integer, String> docIdToUrlMap) {
+		Map<String, Integer> map = new TreeMap<String, Integer>();
+		
+		for (int docId : docIdToUrlMap.keySet()) {
+			map.put(docIdToUrlMap.get(docId), docId);
+		}
+		
+		return map;
+	}
 
-	/** save doc id to term id to tfidf from file **/
+	/** load doc id to term id to tfidf from file **/
 	public static Map<Integer, Map<Integer, Double>> loadDocIdToTermIdToTFIDFMap(String path) {
 		Map<Integer, Map<Integer, Double>> map = new TreeMap<Integer, Map<Integer, Double>>();
 
