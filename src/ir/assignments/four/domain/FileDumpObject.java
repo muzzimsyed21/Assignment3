@@ -59,6 +59,8 @@ public class FileDumpObject {
 				href = href.substring(0, href.indexOf("#"));
 			}
 			
+			href = href.replace("../", "");
+			
 			// Ignore the url if it has an extension that matches our defined set of extensions.
 			if (href.contains(VALIDDOMAIN) && !INVALIDEXTENSIONS.matcher(href).matches()) {
 				links.add(href);
