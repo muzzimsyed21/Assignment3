@@ -139,7 +139,7 @@ public class CreateIndex {
 					}
 				}
 				termIdToTDIDFMap.put(termId, termFreq
-						* (Math.log(termIdToDocIdsMap.get(termId).size())));
+						* (Math.log(termIdToDocIdsMap.get(termId).size()))); // TODO: something might be wrong here
 			}
 			map.put(docId, termIdToTDIDFMap);
 		}

@@ -6,9 +6,7 @@ import ir.assignments.four.indexer.LoadIndex;
 import ir.assignments.four.util.Util;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -29,7 +27,7 @@ public class PageRank {
 	public static void init() {
 		if (CREATEFLAG) {
 			List<File> files = Util.getFilesInPath(IndexerLocations.fileDump);
-			
+
 			Map<Integer, String> docIdToUrlMap = LoadIndex.loadDocIdToUrlMap(IndexerLocations.docIdToUrlCSV);
 			Map<String, Integer> urlToDocIdMap = LoadIndex.loadUrlToDocIdMap(docIdToUrlMap);
 
@@ -81,7 +79,7 @@ public class PageRank {
 			SavePageRank.saveNodesMap(inNodes, PageRankLocations.inNodesCSV);
 			SavePageRank.savePageRankScoresMap(pageRankScores, PageRankLocations.pageRankCSV);
 		} else {
-
+			
 		}
 	}
 
