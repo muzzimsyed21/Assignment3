@@ -72,8 +72,7 @@ public class Indexer {
 			docIdToUrlMap = LoadIndex.loadDocIdToUrlMap(IndexerLocations.docIdToUrlCSV);
 			urltoDocIdMap = LoadIndex.loadUrlToDocIdMap(docIdToUrlMap);
 			*/
-			//docIdToTermIdToTFIDFMap = LoadIndex.loadDocIdToTermIdToTFIDFMap(IndexerLocations.docIdToTermIdToTFIDFCSV);
-			
+			docIdToTermIdToTFIDFMap = LoadIndex.loadDocIdToTermIdToTFIDFMap(IndexerLocations.docIdToTermIdToTFIDFCSV);
 		}
 	}
 

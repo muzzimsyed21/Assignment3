@@ -157,11 +157,12 @@ public class LoadIndex {
 		int docID = 0;
 
 		if (fileString != null) {
-			boolean first, second;
+			boolean first, second, third;
 			int termId = 0;
 			for (String split : fileString.split("\n")) {
 				first = true;
 				second = false;
+				third = false;
 				for (String s : Util.tokenize(split)) {
 					if (first) {
 						docID = Integer.parseInt(s);
@@ -173,8 +174,10 @@ public class LoadIndex {
 					} else if (second) {
 						termId = Integer.parseInt(s);
 						second = false;
-					} else {
+						third = true;
+					} else if (third) {
 						map.get(docID).put(termId, Double.parseDouble(s));
+						third = false;
 					}
 				}
 			}

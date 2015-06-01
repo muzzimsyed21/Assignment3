@@ -43,6 +43,7 @@ public class ICSDumpDatabase {
 			initDocIdToTermIdTable();
 			initTermIdToDocIdTable();
 			initDocIdToUrlTable();
+			initTDIDFTable();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -126,7 +127,7 @@ public class ICSDumpDatabase {
 		PreparedStatement statement;
 
 		String qCreateTblTerms = "CREATE TABLE IF NOT EXISTS icsdump.tfidf "
-				+ "(docid INT NOT NULL," + " termid INT NOT NULL, tfidf FLOAT NOT NULL);";
+				+ "(docid INT NOT NULL," + " termid INT NOT NULL, value INT NOT NULL);";
 
 		statement = this.connection.prepareStatement(qCreateTblTerms);
 		statement.executeUpdate();
@@ -324,6 +325,44 @@ public class ICSDumpDatabase {
 		}
 
 		System.out.println("DocIdToUrl Table Stored");
+
+		return result;
+	}
+	
+	public int insertTFIDFTable(Map<Integer, Map<Integer, Double>> map) {
+		final String query = "INSERT INTO tfidf (docid, termid, value) VALUES (?,?,?)";
+
+		PreparedStatement insert = null;
+		int result = 0;
+
+		try {
+
+			insert = this.connection.prepareStatement(query);
+			int currentBatchSize = 0;
+
+			for (Integer docId : map.keySet()) {
+				for (Integer termId: map.get(docId).keySet()) {
+					insert.setInt(1, docId);
+					insert.setInt(2, termId);
+					insert.setInt(3, map.get(docId).get(termId).intValue());
+					insert.addBatch();
+				}
+				
+				if (++currentBatchSize % this.batchLoadSize == 0){
+					System.out.println("adding " + currentBatchSize);
+					insert.executeBatch(); 
+					insert.clearBatch();
+				}
+			}
+
+			insert.executeBatch();
+			insert.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		System.out.println("TFIDF Table Stored");
 
 		return result;
 	}
