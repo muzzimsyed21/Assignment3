@@ -3,6 +3,7 @@ package ir.assignments.four.database;
 import java.sql.SQLException;
 
 import ir.assignments.four.indexer.Indexer;
+import ir.assignments.four.pageRank.PageRank;
 
 public class LoadDatabase {
 
@@ -14,7 +15,8 @@ public class LoadDatabase {
 		//termDatabase.createTables(); //COMMENT THIS OUT AFTER FIRST RUN
 		
 		// initialize indexer maps
-		Indexer.init(); //UNCOMMENT THIS AFTER FIRST RUN
+		//Indexer.init(); //UNCOMMENT THIS AFTER FIRST RUN
+		PageRank.init();
 		
 		termDatabase.setConnectionAfterDatabaseCreation(); //UNCOMMENT THIS AFTER FIRST RUN
 		// store TermToTermId
@@ -33,7 +35,10 @@ public class LoadDatabase {
 		//termDatabase.insertDocIDToUrlTable(Indexer.getDocIdToUrlMap()); //NEEDS CONSTRAINTS UPDATED
 
 		// store tdidf
-		termDatabase.insertTFIDFTable(Indexer.getDocIdToTermIdToTFIDFMap());
+		//termDatabase.insertTFIDFTable(Indexer.getDocIdToTermIdToTFIDFMap());
+		
+		// store page rank
+		//termDatabase.insertPageRank(PageRank.pageRankScores);
 		
 		//close connection 
 		termDatabase.close();

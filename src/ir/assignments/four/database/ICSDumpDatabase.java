@@ -44,6 +44,7 @@ public class ICSDumpDatabase {
 			initTermIdToDocIdTable();
 			initDocIdToUrlTable();
 			initTDIDFTable();
+			initPageRankTable();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -134,6 +135,17 @@ public class ICSDumpDatabase {
 		System.out.println("Initialized tfidf table");
 	}
 
+	private void initPageRankTable() throws SQLException {
+		PreparedStatement statement;
+
+		String qCreateTblTerms = "CREATE TABLE IF NOT EXISTS icsdump.pageRank "
+				+ "(docid INT NOT NULL, value INT NOT NULL);";
+
+		statement = this.connection.prepareStatement(qCreateTblTerms);
+		statement.executeUpdate();
+		System.out.println("Initialized tfidf table");
+	}
+	
 	public int insertTermIdToTermTable(Map<String, Integer> map) {
 
 		final String termIdToTermQuery = "INSERT INTO termidtoterm (termid, term) VALUES(?,?)";
@@ -363,6 +375,42 @@ public class ICSDumpDatabase {
 		}
 
 		System.out.println("TFIDF Table Stored");
+
+		return result;
+	}
+	
+	public int insertPageRank(Map<Integer, Double> map) {
+		final String query = "INSERT INTO pagerank (docid, value) VALUES (?,?)";
+
+		PreparedStatement insert = null;
+		int result = 0;
+
+		try {
+
+			insert = this.connection.prepareStatement(query);
+			int currentBatchSize = 0;
+
+			for (Integer docId : map.keySet()) {
+				
+				insert.setInt(1, docId);
+				insert.setInt(2, map.get(docId).intValue());
+				insert.addBatch();
+				
+				if (++currentBatchSize % this.batchLoadSize == 0){
+					System.out.println("adding " + currentBatchSize);
+					insert.executeBatch(); 
+					insert.clearBatch();
+				}
+			}
+
+			insert.executeBatch();
+			insert.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		System.out.println("Page Rank Table Stored");
 
 		return result;
 	}
